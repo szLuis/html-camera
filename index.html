@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+          <div class="card" style="width: 18rem;">
+              <video id="player"  class="card-img-top" width=320 height=240  autoplay></video>
+              <div class="card-body">
+                <h5 class="card-title">Live</h5>
+                <p class="card-text">Click the capture button below.</p>
+                <a href="#" id="capture" class="btn btn-primary">Capture</a>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6 invisible" id="captured-image">
+          <div class="card" style="width: 18rem; margin-top: 12px;">
+              <canvas id="snapshot" class="card-img-top" width=320 height=240></canvas>
+              <div class="card-body">
+                <h5 class="card-title">Picture</h5>
+                <p class="card-text">Click the button below to upload.</p>
+                <a href="#" id="upload" class="btn btn-primary">Upload</a>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var player = document.getElementById('player');
+  var snapshotCanvas = document.getElementById('snapshot');
+  var captureButton = document.getElementById('capture');
+  var capturedImage = document.getElementById('captured-image');
+
+
+  var handleSuccess = function(stream) {
+    // Attach the video stream to the video element and autoplay.
+    player.srcObject = stream;
+  };
+
+  captureButton.addEventListener('click', function() {
+    var context = snapshot.getContext('2d');
+    // Draw the video frame to the canvas.
+    context.drawImage(player, 0, 0, snapshotCanvas.width,
+        snapshotCanvas.height);
+    
+    capturedImage.setAttribute('class',"col-md-6 visible");
+  });
+
+  navigator.mediaDevices.getUserMedia({video: true})
+      .then(handleSuccess);
+</script>
+  
+<!-- source: http://www.w3.org/TR/html-media-capture/ -->
+
+<script>
+$(document).ready(function(){
+  var snapshotCanvas = document.getElementById('snapshot');
+  $("#upload").on("click", function() {
+	console.log(snapshotCanvas.toDataURL());
+	$.ajax({
+	  type: "POST",
+	  url: "handlePictureUpload.php",
+	  data: {
+	    picture: snapshotCanvas.toDataURL()
+	  }
+
+	}).done(function(response){
+		alert(response);
+		});
+  });
+});
+</script>
+</body>
+</html>
