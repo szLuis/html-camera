@@ -1,0 +1,12 @@
+{
+    "name": "szluis/html-camera",
+    "description": "Uses browser to access device camera and allows to take a snapshot and the upload to server.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "szluis",
+            "email": "szluis@outlook.com"
+        }
+    ],
+    "require": {}
+}
