@@ -91,7 +91,7 @@
 
     cameraSelect = document.getElementById('cameraSelect');
     
-    cameraSelect.addEventListener('click', function(){
+    cameraSelect.addEventListener('change', function(){
         if (cameraSelect.value !== '0') {
             alert('select clicked' + cameraSelect.value);
             const deviceId = cameraSelect.value;
