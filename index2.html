@@ -7,6 +7,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 </head>
 <body>
         <div class="container">
@@ -104,8 +105,8 @@
         // front = !front; 
         console.log('Front value: ' + front);
         alert('Front value: ' + front);
-        const constraints = { video: { facingMode: (front? "user" : "environment") } };
-        alert(constraints.video.facingMode);
+        const constraints = { video: { facingMode: {exact: front? "user" : "environment" } } };
+        alert(constraints.video.facingMode.exact);
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
         .catch(error => console.error('getUserMedia() error:', error));
