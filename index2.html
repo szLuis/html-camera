@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+        <div class="container">
+                <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
+                    <div class="col-md-12" >
+                      <p>Uploading...</p>
+                    </div>
+                </div>
+                <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
+                    <div class="col-md-12" >
+                        <!-- Target -->
+                        <input readonly style="width:60%; " type="url" name="picture-url" id="picture-url" value="https://github.com/zenorocha/clipboard.js.git">
+            
+                        <!-- Trigger -->
+                        <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url">
+                            <img src="assets/clippy.svg" width="24" height="24" alt="Copy to clipboard">
+                        </button>
+                    </div>
+                </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="card" style="width: 100%;">
+                        <video id="player"  class="card-img-top" style="top: 0" width=640 height=400  autoplay></video>
+                        <div class="card-body">
+                          <h5 class="card-title">Live</h5>
+                          <p class="card-text">Click the video to capture. Click the button to change camera</p>
+                          <div class="text-center" >
+                            <button  id="change-camera">
+                                <img src="assets/switch_camera.svg" width="32" height="32" alt="">
+                            </button>
+                          </div>
+                          <!-- <a href="#" id="capture" class="btn btn-primary">Capture</a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 invisible" id="captured-image">
+                    <div class="card" style="width: 100%;">
+                        <img id="picture-captured" class="card-img-top" width=640  src="" alt="">
+                        <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
+                        <div class="card-body">
+                          <h5 class="card-title">Picture</h5>
+                          <p class="card-text">Click the button below to upload.</p>
+                          <a href="#" id="upload" class="btn btn-primary">Upload</a>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div>
+    <!-- <select name="cameras" id="cameraSelect">
+        <option value="0">Choose camera</option>
+    </select> -->
+    
+    
+    
+
+
+    <script>
+    loadCamera(true);
+
+    // navigator.mediaDevices.enumerateDevices()
+    // .then(gotDevices)
+    // .catch(error => {
+    //     console.log('enumerateDevices() error: ' + error);
+    // });
+
+    // function gotDevices(devicesInfo) {
+    //     const cameraSelect = document.getElementById('cameraSelect');
+    //     devicesInfo.forEach(device => {
+    //         const option = document.createElement('option');
+    //         if (device.kind === 'videoinput'){
+    //             option.value = device.deviceId;
+    //             option.text = device.label || 'Camera ' + cameraSelect.length + 1;
+    //             cameraSelect.appendChild(option);
+    //             console.log( + " - " + device.deviceId + " - " + device.label);
+    //         }
+    //     });
+
+    // }
+
+    // cameraSelect = document.getElementById('cameraSelect');
+    
+    // cameraSelect.addEventListener('click', function(){
+    //     if (cameraSelect.value !== '0') {
+    //         console.log('select clicked' + cameraSelect.value);
+    //         const deviceId = cameraSelect.value;
+    //         navigator.mediaDevices.getUserMedia({video: true})
+    //         .then(gotMedia)
+    //         .catch(error => console.error('getUserMedia() error:', error));
+    //     }
+        
+    // })
+    //load video camera
+    function loadCamera(front = true) {
+        front = !front; 
+        const constraints = { video: { facingMode: (front? "user" : "environment") } };
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(gotMedia)
+        .catch(error => console.error('getUserMedia() error:', error));
+    }
+
+    function gotMedia(mediaStream) {
+        //set vide source to player
+        const player = document.getElementById('player');
+        player.srcObject=mediaStream;
+
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        const imageCapture = new ImageCapture(mediaStreamTrack);
+
+        player.addEventListener("click", function(){
+            takePic(imageCapture);
+        });
+    }
+    var fd = new FormData();
+    
+    //take picture
+    function takePic(imageCapture) {
+        const img = document.getElementById('picture-captured');
+        const capturedImage = document.getElementById('captured-image');
+        imageCapture.takePhoto()
+        .then(blob => {
+            
+            fd.append('data', blob);
+            fd.append('fname', 'image.png');
+
+            img.src = URL.createObjectURL(blob);
+            capturedImage.setAttribute('class',"col-md-6 visible");
+            img.onload = () => { URL.revokeObjectURL(this.src); }
+        })
+        .catch(error => console.error('takePhoto() error:', error));
+    }
+    // switch camera
+    document.getElementById('change-camera').onclick = function() { 
+        loadCamera(true) ;
+    };
+
+
+
+    
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        
+        var img = document.getElementById('picture-captured');
+        $("#upload").on("click", function() {
+            $("#uploading-msg").show();
+                
+            $.ajax({
+                type: "POST",
+                url: "handlePictureUpload.php",
+                data: fd,
+                processData: false,
+                contentType: false //data needs be read as FILES on the server
+            }).done(function(response){
+                $("#uploading-msg").hide();
+                $("#picture-url-div").show();
+                $("#picture-url").val(response);
+                });
+            });
+    });
+</script>
+
+<script>
+    $('.btn-copy').tooltip({
+        trigger: 'click',
+        placement: 'bottom'
+    });
+    
+    function setTooltip(message) {
+        $('.btn-copy').tooltip('hide')
+        .attr('data-original-title', message)
+        .tooltip('show');
+    }
+    
+    function hideTooltip() {
+        setTimeout(function() {
+        $('.btn-copy').tooltip('hide');
+        }, 1000);
+    }
+    
+    var clipboard = new ClipboardJS('.btn-copy');
+    
+    clipboard.on('success', function(e) {
+        setTooltip('Copied!');
+        hideTooltip();
+    
+        e.clearSelection();
+    });
+    
+    clipboard.on('error', function(e) {
+        setTooltip('Failed!');
+        hideTooltip();
+    });
+    
+    </script>
+
+</body>
+</html>
