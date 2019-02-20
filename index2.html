@@ -93,9 +93,9 @@
     
     cameraSelect.addEventListener('change', function(){
         if (cameraSelect.value !== '0') {
-            alert('select clicked' + cameraSelect.value);
+            // alert('select clicked' + cameraSelect.value);
             const deviceId = cameraSelect.value;
-            constraints = {
+            const constraints = {
                 audio: false,
                 video: {
                     deviceId: deviceId ? {exact: deviceId} : undefined
