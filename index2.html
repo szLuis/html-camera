@@ -102,7 +102,10 @@
     //load video camera
     function loadCamera(front) {
         // front = !front; 
+        console.log('Front value: ' + front);
+        alert('Front value: ' + front);
         const constraints = { video: { facingMode: (front? "user" : "environment") } };
+        alert(constraints.video.facingMode);
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
         .catch(error => console.error('getUserMedia() error:', error));
