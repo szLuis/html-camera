@@ -116,7 +116,7 @@
         const player = document.getElementById('player');
         player.srcObject=mediaStream;
 
-        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        const mediaStreamTrack = mediaStream.getVideoTracks()[1];                
         const imageCapture = new ImageCapture(mediaStreamTrack);
 
         player.addEventListener("click", function(){
