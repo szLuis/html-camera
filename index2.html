@@ -64,7 +64,8 @@
 
 
     <script>
-    loadCamera(true);
+        var front = false;
+        loadCamera(front);
 
     // navigator.mediaDevices.enumerateDevices()
     // .then(gotDevices)
@@ -99,8 +100,8 @@
         
     // })
     //load video camera
-    function loadCamera(front = true) {
-        front = !front; 
+    function loadCamera(front) {
+        // front = !front; 
         const constraints = { video: { facingMode: (front? "user" : "environment") } };
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
@@ -137,9 +138,11 @@
         })
         .catch(error => console.error('takePhoto() error:', error));
     }
+
     // switch camera
     document.getElementById('change-camera').onclick = function() { 
-        loadCamera(true) ;
+        front = !front;
+        loadCamera(front) ;
     };
 
 
