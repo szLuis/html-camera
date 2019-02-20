@@ -35,9 +35,12 @@
                           <h5 class="card-title">Live</h5>
                           <p class="card-text">Click the video to capture. Click the button to change camera</p>
                           <div class="text-center" >
-                            <button  id="change-camera">
+                            <select name="cameras" id="cameraSelect">
+                                <option value="0">Choose camera</option>
+                            </select>
+                            <!-- <button  id="change-camera">
                                 <img src="assets/switch_camera.svg" width="32" height="32" alt="">
-                            </button>
+                            </button> -->
                           </div>
                           <!-- <a href="#" id="capture" class="btn btn-primary">Capture</a> -->
                         </div>
@@ -56,9 +59,7 @@
                 </div>
               </div>
             </div>
-    <select name="cameras" id="cameraSelect">
-        <option value="0">Choose camera</option>
-    </select>
+    
     
     
     
@@ -88,24 +89,25 @@
 
     }
 
-    // cameraSelect = document.getElementById('cameraSelect');
+    cameraSelect = document.getElementById('cameraSelect');
     
-    // cameraSelect.addEventListener('click', function(){
-    //     if (cameraSelect.value !== '0') {
-    //         console.log('select clicked' + cameraSelect.value);
-    //         const deviceId = cameraSelect.value;
-    //         navigator.mediaDevices.getUserMedia({video: true})
-    //         .then(gotMedia)
-    //         .catch(error => console.error('getUserMedia() error:', error));
-    //     }
+    cameraSelect.addEventListener('click', function(){
+        if (cameraSelect.value !== '0') {
+            alert('select clicked' + cameraSelect.value);
+            const deviceId = cameraSelect.value;
+            navigator.mediaDevices.getUserMedia({video: { deviceId: deviceId }})
+            .then(gotMedia)
+            .catch(error => console.error('getUserMedia() error:', error));
+        }
         
-    // })
+    })
+
     //load video camera
     function loadCamera(front) {
         // front = !front; 
         console.log('Front value: ' + front);
         alert('Front value: ' + front);
-        const constraints = { video: { facingMode: {exact: front? "user" : "environment" } } };
+        const constraints = { video: { facingMode: front? "user" : "environment" } };
         alert(constraints.video.facingMode.exact);
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
@@ -144,10 +146,10 @@
     }
 
     // switch camera
-    document.getElementById('change-camera').onclick = function() { 
-        front = !front;
-        loadCamera(front) ;
-    };
+    // document.getElementById('change-camera').onclick = function() { 
+    //     front = !front;
+    //     loadCamera(front) ;
+    // };
 
 
 
