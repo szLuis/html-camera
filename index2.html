@@ -55,9 +55,9 @@
                 </div>
               </div>
             </div>
-    <!-- <select name="cameras" id="cameraSelect">
+    <select name="cameras" id="cameraSelect">
         <option value="0">Choose camera</option>
-    </select> -->
+    </select>
     
     
     
@@ -67,25 +67,25 @@
         var front = false;
         loadCamera(front);
 
-    // navigator.mediaDevices.enumerateDevices()
-    // .then(gotDevices)
-    // .catch(error => {
-    //     console.log('enumerateDevices() error: ' + error);
-    // });
+    navigator.mediaDevices.enumerateDevices()
+    .then(gotDevices)
+    .catch(error => {
+        console.log('enumerateDevices() error: ' + error);
+    });
 
-    // function gotDevices(devicesInfo) {
-    //     const cameraSelect = document.getElementById('cameraSelect');
-    //     devicesInfo.forEach(device => {
-    //         const option = document.createElement('option');
-    //         if (device.kind === 'videoinput'){
-    //             option.value = device.deviceId;
-    //             option.text = device.label || 'Camera ' + cameraSelect.length + 1;
-    //             cameraSelect.appendChild(option);
-    //             console.log( + " - " + device.deviceId + " - " + device.label);
-    //         }
-    //     });
+    function gotDevices(devicesInfo) {
+        const cameraSelect = document.getElementById('cameraSelect');
+        devicesInfo.forEach(device => {
+            const option = document.createElement('option');
+            if (device.kind === 'videoinput'){
+                option.value = device.deviceId;
+                option.text = device.label || 'Camera ' + cameraSelect.length + 1;
+                cameraSelect.appendChild(option);
+                console.log( + " - " + device.deviceId + " - " + device.label);
+            }
+        });
 
-    // }
+    }
 
     // cameraSelect = document.getElementById('cameraSelect');
     
@@ -116,7 +116,7 @@
         const player = document.getElementById('player');
         player.srcObject=mediaStream;
 
-        const mediaStreamTrack = mediaStream.getVideoTracks()[1];                
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         const imageCapture = new ImageCapture(mediaStreamTrack);
 
         player.addEventListener("click", function(){
