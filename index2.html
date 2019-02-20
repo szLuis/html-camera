@@ -95,7 +95,13 @@
         if (cameraSelect.value !== '0') {
             alert('select clicked' + cameraSelect.value);
             const deviceId = cameraSelect.value;
-            navigator.mediaDevices.getUserMedia({video: { deviceId: deviceId }})
+            constraints = {
+                audio: false,
+                video: {
+                    deviceId: deviceId ? {exact: deviceId} : undefined
+                }
+            };
+            navigator.mediaDevices.getUserMedia(constraints)
             .then(gotMedia)
             .catch(error => console.error('getUserMedia() error:', error));
         }
@@ -105,10 +111,7 @@
     //load video camera
     function loadCamera(front) {
         // front = !front; 
-        console.log('Front value: ' + front);
-        alert('Front value: ' + front);
         const constraints = { video: { facingMode: front? "user" : "environment" } };
-        alert(constraints.video.facingMode.exact);
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
         .catch(error => console.error('getUserMedia() error:', error));
