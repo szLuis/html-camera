@@ -83,7 +83,7 @@
                 option.value = device.deviceId;
                 option.text = device.label || 'Camera ' + cameraSelect.length + 1;
                 cameraSelect.appendChild(option);
-                console.log( + " - " + device.deviceId + " - " + device.label);
+                console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
             }
         });
 
@@ -104,6 +104,8 @@
             navigator.mediaDevices.getUserMedia(constraints)
             .then(gotMedia)
             .catch(error => console.error('getUserMedia() error:', error));
+
+            console.log('User media fired');
         }
         
     })
@@ -118,11 +120,6 @@
     // }
 
     function gotMedia(mediaStream) {
-        cameraSelect.addEventListener('change', function(){
-            if (cameraSelect.value !== '0') {
-                stopVideoStream(mediaStreamTrack);
-            }
-        });
         //set vide source to player
         const player = document.getElementById('player');
         player.srcObject=mediaStream;
@@ -130,6 +127,13 @@
         
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
+
+        cameraSelect.addEventListener('change', function(){
+            if (cameraSelect.value !== '0') {
+                console.log('Media Track stop fired');
+                stopVideoStream(mediaStream);
+            }
+        });
 
 
         const imageCapture = new ImageCapture(mediaStreamTrack);
@@ -157,9 +161,13 @@
         .catch(error => console.error('takePhoto() error:', error));
     }
 
-    function stopVideoStream(mediaStreamTrack){
+    function stopVideoStream(mediaStream){
         // console.log(mediaStreamTrack);
-        mediaStreamTrack.stop();
+        if (mediaStream.active){
+            console.log('is active video tracks' );
+            console.log(mediaStream.getVideoTracks());
+            mediaStream.getVideoTracks()[0].stop();
+        }
         // console.log(mediaStreamTrack);
     }
 
