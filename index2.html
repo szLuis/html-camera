@@ -80,7 +80,7 @@
             const button = document.createElement('button');
             
             if (device.kind === 'videoinput'){
-                const text = document.createTextNode(device.deviceId);
+                const text = document.createTextNode(device.label);
                 button.appendChild(text);
                 button.addEventListener('click',  function(){
                     const constraints = {
@@ -152,12 +152,14 @@
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
 
-        const button = document.querySelector("button");
+        const button = document.querySelectorAll("button");
 
-        button.addEventListener("click", function(){
+        button.forEach(btn =>{
+            btn.addEventListener("click", function(){
             alert('click fired');
             stopVideoStream(mediaStream);
         });
+        } );
 
         cameraSelect.addEventListener('change', function(){
             if (cameraSelect.value !== '0') {
