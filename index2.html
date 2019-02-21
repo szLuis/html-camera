@@ -144,22 +144,30 @@
     // }
 
     function gotMedia(mediaStream) {
+
+        if (mediaStream.active){
+            console.log('is active video tracks' );
+            console.log(mediaStream.getVideoTracks());
+            mediaStream.getVideoTracks()[0].stop();
+        }
+
         //set vide source to player
         const player = document.getElementById('player');
         player.srcObject=mediaStream;
         // console.log(mediaStream.getVideoTracks());
+
         
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
 
-        const button = document.querySelectorAll("button");
+        // const button = document.querySelectorAll("button");
 
-        button.forEach(btn =>{
-            btn.addEventListener("click", function(){
-            alert('click fired');
-            stopVideoStream(mediaStream);
-        });
-        } );
+        // button.forEach(btn =>{
+        //     btn.addEventListener("click", function(){
+        //     alert('click fired');
+        //     stopVideoStream(mediaStream);
+        // });
+        // } );
 
         cameraSelect.addEventListener('change', function(){
             if (cameraSelect.value !== '0') {
