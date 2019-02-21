@@ -76,18 +76,42 @@
     });
 
     function gotDevices(devicesInfo) {
-        const cameraSelect = document.getElementById('cameraSelect');
         devicesInfo.forEach(device => {
-            const option = document.createElement('option');
+            const button = document.createElement('button');
+            
             if (device.kind === 'videoinput'){
-                option.value = device.deviceId;
-                option.text = device.label || 'Camera ' + cameraSelect.length + 1;
-                cameraSelect.appendChild(option);
-                console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
+                const text = document.createTextNode(device.deviceId);
+                button.appendChild(text);
+                button.addEventListener('click',  function(){
+                    const constraints = {
+                        audio: false,
+                        video: {
+                            deviceId: device.deviceId ? {exact: device.deviceId} : undefined
+                        }
+                    };
+                    navigator.mediaDevices.getUserMedia(constraints)
+                    .then(gotMedia)
+                    .catch(error => console.error('getUserMedia() error:', error));
+                });
+                document.body.appendChild(button);
             }
         });
 
     }
+
+    // function gotDevices(devicesInfo) {
+    //     const cameraSelect = document.getElementById('cameraSelect');
+    //     devicesInfo.forEach(device => {
+    //         const option = document.createElement('option');
+    //         if (device.kind === 'videoinput'){
+    //             option.value = device.deviceId;
+    //             option.text = device.label || 'Camera ' + cameraSelect.length + 1;
+    //             cameraSelect.appendChild(option);
+    //             console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
+    //         }
+    //     });
+
+    // }
 
     cameraSelect = document.getElementById('cameraSelect');
     
@@ -125,7 +149,7 @@
         player.srcObject=mediaStream;
         // console.log(mediaStream.getVideoTracks());
         
-        const mediaStreamTrack = mediaStream.getVideoTracks()[1];                
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
 
         cameraSelect.addEventListener('change', function(){
