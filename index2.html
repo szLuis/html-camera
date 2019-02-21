@@ -86,7 +86,7 @@
                     const constraints = {
                         audio: false,
                         video: {
-                            deviceId: device.deviceId ? {mandatory: device.deviceId} : undefined
+                            deviceId: device.deviceId ? {exact: device.deviceId} : undefined
                         }
                     };
                     navigator.mediaDevices.getUserMedia(constraints)
