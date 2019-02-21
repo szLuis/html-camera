@@ -125,7 +125,7 @@
         player.srcObject=mediaStream;
         // console.log(mediaStream.getVideoTracks());
         
-        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        const mediaStreamTrack = mediaStream.getVideoTracks()[1];                
         // console.log(mediaStreamTrack);
 
         cameraSelect.addEventListener('change', function(){
@@ -166,7 +166,7 @@
         if (mediaStream.active){
             console.log('is active video tracks' );
             console.log(mediaStream.getVideoTracks());
-            mediaStream.getVideoTracks()[1].stop();
+            mediaStream.getVideoTracks()[0].stop();
         }
         // console.log(mediaStreamTrack);
     }
