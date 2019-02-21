@@ -83,53 +83,57 @@
         });
     }
 
-    function gotDevices(devicesInfo) {
-        devicesInfo.forEach(device => {
-            const button = document.createElement('button');
-            
-            if (device.kind === 'videoinput'){
-                const text = document.createTextNode(device.label);
-                button.appendChild(text);
-                button.addEventListener('click',  function(){
-
-                    if (typeof currentStream !== 'undefined') {
-                        stopMediaTracks(currentStream);
-                    }
-
-                    const constraints = {
-                        audio: false,
-                        video: {
-                            deviceId: device.deviceId ? {exact: device.deviceId} : undefined
-                        }
-                    };
-                    navigator.mediaDevices.getUserMedia(constraints)
-                    .then(gotMedia)
-                    .catch(error => console.error('getUserMedia() error:', error));
-                });
-                document.body.appendChild(button);
-            }
-        });
-
-    }
-
     // function gotDevices(devicesInfo) {
-    //     const cameraSelect = document.getElementById('cameraSelect');
     //     devicesInfo.forEach(device => {
-    //         const option = document.createElement('option');
+    //         const button = document.createElement('button');
+            
     //         if (device.kind === 'videoinput'){
-    //             option.value = device.deviceId;
-    //             option.text = device.label || 'Camera ' + cameraSelect.length + 1;
-    //             cameraSelect.appendChild(option);
-    //             console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
+    //             const text = document.createTextNode(device.label);
+    //             button.appendChild(text);
+    //             button.addEventListener('click',  function(){
+
+    //                 if (typeof currentStream !== 'undefined') {
+    //                     stopMediaTracks(currentStream);
+    //                 }
+
+    //                 const constraints = {
+    //                     audio: false,
+    //                     video: {
+    //                         deviceId: device.deviceId ? {exact: device.deviceId} : undefined
+    //                     }
+    //                 };
+    //                 navigator.mediaDevices.getUserMedia(constraints)
+    //                 .then(gotMedia)
+    //                 .catch(error => console.error('getUserMedia() error:', error));
+    //             });
+    //             document.body.appendChild(button);
     //         }
     //     });
 
     // }
 
+    function gotDevices(devicesInfo) {
+        const cameraSelect = document.getElementById('cameraSelect');
+        devicesInfo.forEach(device => {
+            const option = document.createElement('option');
+            if (device.kind === 'videoinput'){
+                option.value = device.deviceId;
+                option.text = device.label || 'Camera ' + cameraSelect.length + 1;
+                cameraSelect.appendChild(option);
+                console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
+            }
+        });
+
+    }
+
     cameraSelect = document.getElementById('cameraSelect');
     
     cameraSelect.addEventListener('change', function(){
         if (cameraSelect.value !== '0') {
+
+            if (typeof currentStream !== 'undefined') {
+                stopMediaTracks(currentStream);
+            }
             // alert('select clicked' + cameraSelect.value);
             const deviceId = cameraSelect.value;
             const constraints = {
