@@ -86,7 +86,7 @@
                     const constraints = {
                         audio: false,
                         video: {
-                            deviceId: device.deviceId ? {exact: device.deviceId} : undefined
+                            deviceId: device.deviceId ? {mandatory: device.deviceId} : undefined
                         }
                     };
                     navigator.mediaDevices.getUserMedia(constraints)
@@ -154,11 +154,11 @@
         
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         
-        if (mediaStream.active){
-            console.log('is active video tracks' );
-            console.log(mediaStream.getVideoTracks());
-            mediaStream.getVideoTracks()[0].stop();
-        }
+        // if (mediaStream.active){
+        //     console.log('is active video tracks' );
+        //     console.log(mediaStream.getVideoTracks());
+        //     mediaStream.getVideoTracks()[0].stop();
+        // }
         // console.log(mediaStreamTrack);
 
         // const button = document.querySelectorAll("button");
