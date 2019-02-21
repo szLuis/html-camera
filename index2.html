@@ -152,6 +152,12 @@
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
 
+        const button = document.querySelector("button");
+
+        button.addEventListener("click", function(){
+            stopVideoStream(mediaStream);
+        });
+
         cameraSelect.addEventListener('change', function(){
             if (cameraSelect.value !== '0') {
                 console.log('Media Track stop fired');
