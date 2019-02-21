@@ -75,6 +75,14 @@
         console.log('enumerateDevices() error: ' + error);
     });
 
+    let currentStream;
+
+    function stopMediaTracks(stream) {
+        stream.getTracks().forEach(track => {
+            track.stop();
+        });
+    }
+
     function gotDevices(devicesInfo) {
         devicesInfo.forEach(device => {
             const button = document.createElement('button');
@@ -83,6 +91,11 @@
                 const text = document.createTextNode(device.label);
                 button.appendChild(text);
                 button.addEventListener('click',  function(){
+
+                    if (typeof currentStream !== 'undefined') {
+                        stopMediaTracks(currentStream);
+                    }
+
                     const constraints = {
                         audio: false,
                         video: {
@@ -151,7 +164,7 @@
         player.srcObject=mediaStream;
         // console.log(mediaStream.getVideoTracks());
 
-        
+        currentStream = mediaStream;
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         
         // if (mediaStream.active){
