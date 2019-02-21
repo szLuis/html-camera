@@ -152,12 +152,13 @@
         // console.log(mediaStream.getVideoTracks());
 
         
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        
         if (mediaStream.active){
             console.log('is active video tracks' );
             console.log(mediaStream.getVideoTracks());
             mediaStream.getVideoTracks()[0].stop();
         }
-        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
 
         // const button = document.querySelectorAll("button");
