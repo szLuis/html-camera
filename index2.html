@@ -108,29 +108,29 @@
         
     })
 
-    //load video camera
-    function loadCamera(front) {
-        // front = !front; 
-        const constraints = { video: { facingMode: front? "user" : "environment" } };
-        navigator.mediaDevices.getUserMedia(constraints)
-        .then(gotMedia)
-        .catch(error => console.error('getUserMedia() error:', error));
-    }
+    // //load video camera
+    // function loadCamera(front) {
+    //     // front = !front; 
+    //     const constraints = { video: { facingMode: front? "user" : "environment" } };
+    //     navigator.mediaDevices.getUserMedia(constraints)
+    //     .then(gotMedia)
+    //     .catch(error => console.error('getUserMedia() error:', error));
+    // }
 
     function gotMedia(mediaStream) {
-        //set vide source to player
-        const player = document.getElementById('player');
-        player.srcObject=mediaStream;
-        console.log(mediaStream);
-
-        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
-        console.log(mediaStreamTrack);
-
         cameraSelect.addEventListener('change', function(){
             if (cameraSelect.value !== '0') {
                 stopVideoStream(mediaStreamTrack);
             }
         });
+        //set vide source to player
+        const player = document.getElementById('player');
+        player.srcObject=mediaStream;
+        // console.log(mediaStream.getVideoTracks());
+        
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        // console.log(mediaStreamTrack);
+
 
         const imageCapture = new ImageCapture(mediaStreamTrack);
 
