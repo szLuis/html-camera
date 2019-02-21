@@ -145,11 +145,6 @@
 
     function gotMedia(mediaStream) {
 
-        if (mediaStream.active){
-            console.log('is active video tracks' );
-            console.log(mediaStream.getVideoTracks());
-            mediaStream.getVideoTracks()[0].stop();
-        }
 
         //set vide source to player
         const player = document.getElementById('player');
@@ -157,6 +152,11 @@
         // console.log(mediaStream.getVideoTracks());
 
         
+        if (mediaStream.active){
+            console.log('is active video tracks' );
+            console.log(mediaStream.getVideoTracks());
+            mediaStream.getVideoTracks()[0].stop();
+        }
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
         // console.log(mediaStreamTrack);
 
