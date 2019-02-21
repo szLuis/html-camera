@@ -121,8 +121,17 @@
         //set vide source to player
         const player = document.getElementById('player');
         player.srcObject=mediaStream;
+        console.log(mediaStream);
 
         const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        console.log(mediaStreamTrack);
+
+        cameraSelect.addEventListener('change', function(){
+            if (cameraSelect.value !== '0') {
+                stopVideoStream(mediaStreamTrack);
+            }
+        });
+
         const imageCapture = new ImageCapture(mediaStreamTrack);
 
         player.addEventListener("click", function(){
@@ -146,6 +155,12 @@
             img.onload = () => { URL.revokeObjectURL(this.src); }
         })
         .catch(error => console.error('takePhoto() error:', error));
+    }
+
+    function stopVideoStream(mediaStreamTrack){
+        // console.log(mediaStreamTrack);
+        mediaStreamTrack.stop();
+        // console.log(mediaStreamTrack);
     }
 
     // switch camera
