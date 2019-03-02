@@ -1,142 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Take picture</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
 </head>
 <body>
-  <div class="container">
-      <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
-          <div class="col-md-12" >
-            <p>Uploading...</p>
-          </div>
-      </div>
-      <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
-        <div class="col-md-12" >
-          <!-- Target -->
-          <input readonly style="width:60%; " type="url" name="picture-url" id="picture-url" value="https://github.com/zenorocha/clipboard.js.git">
+        <div class="container">
+                <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
+                    <div class="col-md-12" >
+                      <p>Uploading...</p>
+                    </div>
+                </div>
+                <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
+                    <div class="col-md-12" >
+                        <!-- Target -->
+                        <input readonly style="width:60%; " type="url" name="picture-url" id="picture-url" value="https://github.com/zenorocha/clipboard.js.git">
+            
+                        <!-- Trigger -->
+                        <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url">
+                            <img src="assets/clippy.svg" width="24" height="24" alt="Copy to clipboard">
+                        </button>
 
-          <!-- Trigger -->
-          <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url">
-              <img src="assets/clippy.svg" width="24" height="24" alt="Copy to clipboard">
-          </button>
-
-      </div>
-        
-
-      </div>
-    <div class="row">
-      <div class="col-md-6">
-          <div class="card" style="width: 100%;">
-              <video id="player"  class="card-img-top" style="top: 0" width=640 height=400  autoplay></video>
-              <div class="card-body">
-                <h5 class="card-title">Live</h5>
-                <p class="card-text">Click the capture button below.</p>
-                <a href="#" id="capture" class="btn btn-primary">Capture</a>
-              </div>
-          </div>
-      </div>
-      <div class="col-md-6 invisible" id="captured-image">
-          <div class="card" style="width: 100%;">
-              <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas>
-              <div class="card-body">
-                <h5 class="card-title">Picture</h5>
-                <p class="card-text">Click the button below to upload.</p>
-                <a href="#" id="upload" class="btn btn-primary">Upload</a>
+                        <a href="gallery.php" class="btn btn-primary">Gallery</a>
+                    </div>
+                </div>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="card" style="width: 100%;">
+                        <video id="player"  class="card-img-top" style="top: 0" width=640 height=400  autoplay></video>
+                        <div class="card-body">
+                          <!-- <h5 class="card-title">Live</h5>
+                          <p class="card-text">Click the video to capture. Click the button to change camera</p> -->
+                          <div class="text-center" >
+                            <!-- <select name="cameras" id="cameraSelect">
+                                <option value="0">Choose camera</option>
+                            </select> -->
+                            <!-- <button  id="change-camera">
+                                <img src="assets/switch_camera.svg" width="32" height="32" alt="">
+                            </button> -->
+                            <a href="#" id="capture" class="btn btn-primary">Take picture</a>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 invisible" id="captured-image">
+                    <div class="card" style="width: 100%;">
+                        <img id="picture-captured" class="card-img-top" width=640  src="" alt="">
+                        <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
+                        <div class="card-body">
+                                <div class="text-center" >
+                                    <!-- <h5 class="card-title">Picture</h5>
+                                    <p class="card-text">Click the button below to upload.</p> -->
+                                    <a href="#" id="upload" class="btn btn-primary">Upload</a>
+                                </div>
+                        </div>
+                      </div>
+                </div>
               </div>
             </div>
-      </div>
-    </div>
-  </div>
+    
+    
+    
+    
+
+
+    <script>
+        var front = false;
+        loadCamera(front);
+
+        // navigator.mediaDevices.enumerateDevices()
+        // .then(gotDevices)
+        // .catch(error => {
+        //     console.log('enumerateDevices() error: ' + error);
+        // });
+
+        // let currentStream;
+
+        // function stopMediaTracks(stream) {
+        //     stream.getTracks().forEach(track => {
+        //         track.stop();
+        //     });
+        // }
+
+    // function gotDevices(devicesInfo) {
+    //     devicesInfo.forEach(device => {
+    //         const button = document.createElement('button');
+            
+    //         if (device.kind === 'videoinput'){
+    //             const text = document.createTextNode(device.label);
+    //             button.appendChild(text);
+    //             button.addEventListener('click',  function(){
+
+    //                 if (typeof currentStream !== 'undefined') {
+    //                     stopMediaTracks(currentStream);
+    //                 }
+
+    //                 const constraints = {
+    //                     audio: false,
+    //                     video: {
+    //                         deviceId: device.deviceId ? {exact: device.deviceId} : undefined
+    //                     }
+    //                 };
+    //                 navigator.mediaDevices.getUserMedia(constraints)
+    //                 .then(gotMedia)
+    //                 .catch(error => console.error('getUserMedia() error:', error));
+    //             });
+    //             document.body.appendChild(button);
+    //         }
+    //     });
+
+    // }
+
+        // function gotDevices(devicesInfo) {
+        //     const cameraSelect = document.getElementById('cameraSelect');
+        //     devicesInfo.forEach(device => {
+        //         const option = document.createElement('option');
+        //         if (device.kind === 'videoinput'){
+        //             option.value = device.deviceId;
+        //             option.text = device.label || 'Camera ' + cameraSelect.length + 1;
+        //             cameraSelect.appendChild(option);
+        //             console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
+        //         }
+        //     });
+
+        // }
+
+    // cameraSelect = document.getElementById('cameraSelect');
+    // var front = true;
+    // cameraSelect.addEventListener('change', function(){
+    //     if (cameraSelect.value !== '0') {
+
+    //         if (typeof currentStream !== 'undefined') {
+    //             stopMediaTracks(currentStream);
+    //         }
+    //         // alert('select clicked' + cameraSelect.value);
+    //         const deviceId = cameraSelect.value;
+    //         const constraints = {
+    //             audio: false,
+    //             video: {
+    //                 facingMode: front? "user" : "environment" 
+    //                 // deviceId: deviceId ? {exact: deviceId} : undefined
+    //             }
+    //         };
+    //         navigator.mediaDevices.getUserMedia(constraints)
+    //         .then(gotMedia)
+    //         .catch(error => console.error('getUserMedia() error:', error));
+
+    //         console.log('User media fired');
+    //     }
+        
+    // })
+
+    // //load video camera
+    function loadCamera(front) {
+        // front = !front; 
+        const constraints = { video: { facingMode: front? "user" : "environment" } };
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(gotMedia)
+        .catch(error => console.error('getUserMedia() error:' + error));
+    }
+
+    function gotMedia(mediaStream) {
+
+
+        //set vide source to player
+        const player = document.getElementById('player');
+        player.srcObject=mediaStream;
+        // console.log(mediaStream.getVideoTracks());
+
+        currentStream = mediaStream;
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        
+        // if (mediaStream.active){
+        //     console.log('is active video tracks' );
+        //     console.log(mediaStream.getVideoTracks());
+        //     mediaStream.getVideoTracks()[0].stop();
+        // }
+        // console.log(mediaStreamTrack);
+
+        // const button = document.querySelectorAll("button");
+
+        // button.forEach(btn =>{
+        //     btn.addEventListener("click", function(){
+        //     alert('click fired');
+        //     stopVideoStream(mediaStream);
+        // });
+        // } );
+
+        // cameraSelect.addEventListener('change', function(){
+        //     if (cameraSelect.value !== '0') {
+        //         console.log('Media Track stop fired');
+        //         stopVideoStream(mediaStream);
+        //     }
+        // });
+
+
+        const imageCapture = new ImageCapture(mediaStreamTrack);
+
+        // player.addEventListener("click", function(){
+        //     takePic(imageCapture);
+        // });
+
+        const captureButton = document.getElementById('capture');
+        captureButton.addEventListener('click', function(){
+            takePic(imageCapture);
+        })
+
+    }
 
 
 
+    var fd = new FormData();
+    
+    //take picture
+    function takePic(imageCapture) {
+        const img = document.getElementById('picture-captured');
+        const capturedImage = document.getElementById('captured-image');
+        imageCapture.takePhoto()
+        .then(blob => {
+            
+            fd.append('data', blob);
+            fd.append('fname', 'image.png');
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+            img.src = URL.createObjectURL(blob);
+            capturedImage.setAttribute('class',"col-md-6 visible");
+            img.onload = () => { URL.revokeObjectURL(this.src); }
+        })
+        .catch(error => console.error('takePhoto() error:', error));
+    }
+
+    function stopVideoStream(mediaStream){
+        // console.log(mediaStreamTrack);
+        if (mediaStream.active){
+            console.log('is active video tracks' );
+            console.log(mediaStream.getVideoTracks());
+            mediaStream.getVideoTracks()[0].stop();
+        }
+        // console.log(mediaStreamTrack);
+    }
+
+    // switch camera
+    // document.getElementById('change-camera').onclick = function() { 
+    //     front = !front;
+    //     loadCamera(front) ;
+    // };
+
+
+
+    
+</script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 
 <script>
-    var player = document.getElementById('player');
-    var snapshotCanvas = document.getElementById('snapshot');
-    var captureButton = document.getElementById('capture');
-    var capturedImage = document.getElementById('captured-image');
-  
-  
-    var handleSuccess = function(stream) {
-      // Attach the video stream to the video element and autoplay.
-      player.srcObject = stream;
-    };
-  
-    captureButton.addEventListener('click', function() {
-      var context = snapshotCanvas.getContext('2d');
-      // Draw the video frame to the canvas.
-      context.drawImage(player, 0, 0, snapshotCanvas.width,
-      snapshotCanvas.height);
-      
-      capturedImage.setAttribute('class',"col-md-6 visible");
-    });
-  
-    navigator.mediaDevices.getUserMedia({video: true})
-        .then(handleSuccess);
-  </script>
-    
-  <!-- source: http://www.w3.org/TR/html-media-capture/ -->
-
-<script>
     $(document).ready(function(){
-      var snapshotCanvas = document.getElementById('snapshot');
-      $("#upload").on("click", function() {
-        $("#uploading-msg").show();
-        $.ajax({
-          type: "POST",
-          url: "handlePictureUpload.php",
-          data: {
-            picture: snapshotCanvas.toDataURL()
-          }         
-        }).done(function(response){
-            $("#uploading-msg").hide();
-            $("#picture-url-div").show();
-            $("#picture-url").val(response);
-          });
-      });
+        
+        var img = document.getElementById('picture-captured');
+        $("#upload").on("click", function() {
+            $("#uploading-msg").show();
+                
+            $.ajax({
+                type: "POST",
+                url: "handlePictureUpload.php",
+                data: fd,
+                processData: false,
+                contentType: false //data needs be read as FILES on the server
+            }).done(function(response){
+                $("#uploading-msg").hide();
+                $("#picture-url-div").show();
+                $("#picture-url").val(response);
+                });
+            });
     });
 </script>
+
 <script>
+    $('.btn-copy').tooltip({
+        trigger: 'click',
+        placement: 'bottom'
+    });
+    
+    function setTooltip(message) {
+        $('.btn-copy').tooltip('hide')
+        .attr('data-original-title', message)
+        .tooltip('show');
+    }
+    
+    function hideTooltip() {
+        setTimeout(function() {
+        $('.btn-copy').tooltip('hide');
+        }, 1000);
+    }
+    
+    var clipboard = new ClipboardJS('.btn-copy');
+    
+    clipboard.on('success', function(e) {
+        setTooltip('Copied!');
+        hideTooltip();
+    
+        e.clearSelection();
+    });
+    
+    clipboard.on('error', function(e) {
+        setTooltip('Failed!');
+        hideTooltip();
+    });
+    
+    </script>
 
-  $('.btn-copy').tooltip({
-      trigger: 'click',
-      placement: 'bottom'
-  });
-
-  function setTooltip(message) {
-    $('.btn-copy').tooltip('hide')
-      .attr('data-original-title', message)
-      .tooltip('show');
-  }
-
-  function hideTooltip() {
-    setTimeout(function() {
-      $('.btn-copy').tooltip('hide');
-    }, 1000);
-  }
-
-  var clipboard = new ClipboardJS('.btn-copy');
-
-  clipboard.on('success', function(e) {
-    setTooltip('Copied!');
-    hideTooltip();
-
-    e.clearSelection();
-  });
-
-  clipboard.on('error', function(e) {
-    setTooltip('Failed!');
-    hideTooltip();
-  });
-
-</script>
 </body>
 </html>
