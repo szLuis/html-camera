@@ -18,6 +18,8 @@
             <div class="col-md-12" >
                 <ul class="list-unstyled">
                     <?php
+                        
+
                         $relativePath = $_SERVER["SERVER_NAME"] . substr($_SERVER["SCRIPT_NAME"], 0,-8);
                         $dir  = $_GET['dir'];
                         if (isset($dir)){
@@ -35,9 +37,10 @@
                                 $i=0;
                                 foreach ($fileList as $file) {
                                     $filePath = $destination . "/" . $file;
+                                    $thumnail="thumbnails/" . $file;
                                     if (is_file($filePath)){
                                         print(" <li class='media'>
-                                                    <img src='$filePath' class='align-self-center mr-3' width=160>" . 
+                                                    <img src='$thumnail' class='align-self-center mr-3' width=160>" . 
                                                     '<div class="media-body">
                                                         <input readonly style="width:60%" type="url" name="picture-url" id="picture-url'. $i .'" value="' . RELATIVE_PATH . $filePath . '">
                                                         <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url'. $i .'">

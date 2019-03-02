@@ -11,8 +11,8 @@
     <div class="container">
         <div class="row">
             <div>
-                <a href="index.html" class="btn btn-primary" >Home</a> 
-                <p style="margin-top: 30px; display:block; clear:both;">Last galleries</p> 
+                <a href="index.html" style="margin: 30px 0 30px 0;" class="btn btn-primary" >Home</a> 
+                <!-- <p style="display:block; clear:both;">Last galleries</p>  -->
             </div>
 
         </div>

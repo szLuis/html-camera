@@ -1,6 +1,11 @@
 <?php
 	// requires php5
+	require_once  'vendor/autoload.php';
+	use Gumlet\ImageResize;
+	
 	define('UPLOAD_DIR', 'images/');
+	define('THUMBNAIL_DIR', 'thumbnails/');
+
 	if (count($_FILES) === 1){
 		$img = $_FILES['data']['tmp_name'];	
 	}else{
@@ -21,8 +26,14 @@
 
 	function saveBlobAsImage($imgSource){
 		$directory = getUploadDir();
-		$destination = $directory . uniqid() . '.png';
+		$fileName = uniqid() . '.png';
+		$destination = $directory . $fileName;
 		$success = move_uploaded_file($imgSource, $destination);
+		if ($success){
+			$thumbnail = new ImageResize($destination);
+			$thumbnail->resizeToWidth(160);
+			$thumbnail->save(THUMBNAIL_DIR . $fileName);
+		}
 		print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 	}
 
