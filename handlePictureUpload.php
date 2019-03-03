@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 	// requires php5
 	require_once  'vendor/autoload.php';
 	use Gumlet\ImageResize;
