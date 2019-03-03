@@ -234,7 +234,7 @@
         })
         .catch(error => console.error('getPhotoCapabilities() error:', error));
 
-        imageCapture.takePhoto({ imageWidth:maxWidth })
+        imageCapture.takePhoto({ imageWidth:1024 })
         .then(blob => {
             
             fd.append('data', blob);
