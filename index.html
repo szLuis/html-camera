@@ -12,7 +12,7 @@
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
 </head>
 <body>
-        <div class="container">
+        <div class="container-fluid">
                 <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
                     <div class="col-md-12" >
                       <p>Uploading...</p>
@@ -32,9 +32,9 @@
                     </div>
                 </div>
               <div class="row">
-                <div class="col-md-6">
-                    <div class="card" style="width: 100%;">
-                        <video id="player"  class="card-img-top" style="top: 0" width=640 height=400  autoplay></video>
+                <div class="col-md-6 col-lg-6">
+                    <div class="card" >
+                        <video id="player"  class="card-img-top" style="top: 0"  autoplay></video>
                         <div class="card-body">
                           <!-- <h5 class="card-title">Live</h5>
                           <p class="card-text">Click the video to capture. Click the button to change camera</p> -->
@@ -50,9 +50,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 invisible" id="captured-image">
-                    <div class="card" style="width: 100%;">
-                        <img id="picture-captured" class="card-img-top" width=640  src="" alt="">
+                <div class="col-md-6  col-lg-6 invisible" id="captured-image">
+                    <div class="card" >
+                        <img id="picture-captured" class="card-img-top"  src="" alt="">
                         <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
                         <div class="card-body">
                                 <div class="text-center" >
@@ -72,8 +72,7 @@
 
 
     <script>
-        var front = false;
-        loadCamera(front);
+        loadCamera();
 
         // navigator.mediaDevices.enumerateDevices()
         // .then(gotDevices)
@@ -159,9 +158,9 @@
     // })
 
     // //load video camera
-    function loadCamera(front) {
+    function loadCamera() {
         // front = !front; 
-        const constraints = { video: { facingMode: front? "user" : "environment" } };
+        const constraints = { video: { facingMode: { exact: 'environment' } } };
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
         .catch(error => console.error('getUserMedia() error:' + error));
@@ -221,16 +220,27 @@
     
     //take picture
     function takePic(imageCapture) {
+        const player = document.getElementById('player');
+            
         const img = document.getElementById('picture-captured');
         const capturedImage = document.getElementById('captured-image');
-        imageCapture.takePhoto()
+        var maxWidth;
+        var maxHeight;
+        imageCapture.getPhotoCapabilities()
+        .then(photoCapabilities =>{
+            maxWidth = photoCapabilities.imageWidth.max;
+            maxHeight = photoCapabilities.imageHeight.max;
+        })
+        .catch(error => console.error('getPhotoCapabilities() error:', error));
+
+        imageCapture.takePhoto({ imageWidth:maxWidth })
         .then(blob => {
             
             fd.append('data', blob);
             fd.append('fname', 'image.png');
 
             img.src = URL.createObjectURL(blob);
-            capturedImage.setAttribute('class',"col-md-6 visible");
+            capturedImage.setAttribute('class',"col-md-6  col-lg-6 visible");
             img.onload = () => { URL.revokeObjectURL(this.src); }
         })
         .catch(error => console.error('takePhoto() error:', error));
