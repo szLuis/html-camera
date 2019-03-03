@@ -42,7 +42,7 @@ error_reporting(E_ALL);
 		var_dump($filePath);
 
 		try {
-			$image = imagecreatefrompng($filePath);
+			$image = @imagecreatefrompng($filePath);
 			var_dump($image);
 			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
 			$fill = imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
