@@ -160,8 +160,8 @@
     // //load video camera
     function loadCamera() {
         // front = !front; 
-        // const constraints = { video: { facingMode: { exact: 'environment' } } };
-        const constraints = { video: { facingMode: 'environment' } };
+        const constraints = { video: { facingMode: { exact: 'environment' } } };
+        // const constraints = { video: { facingMode: 'environment' } };
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
         .catch(error => console.error('getUserMedia() error:' + error));
@@ -234,7 +234,7 @@
         })
         .catch(error => console.error('getPhotoCapabilities() error:', error));
 
-        imageCapture.takePhoto({ imageWidth:980 })
+        imageCapture.takePhoto({ imageWidth:maxWidth, imageHeight: maxHeight })
         .then(blob => {
             
             fd.append('data', blob);

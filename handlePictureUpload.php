@@ -39,26 +39,21 @@ error_reporting(E_ALL);
 	// }
 
 	function savePNGtoJPG($filePath){
-		var_dump($filePath);
-
 		try {
 			$image = @imagecreatefrompng($filePath);
-			var_dump($image);
 			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
-			$fill = imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
-			$alpha=imagealphablending($bg, TRUE);
-			$copy  = imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-			$destroy=imagedestroy($image);
+			imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+			imagealphablending($bg, TRUE);
+			imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+			imagedestroy($image);
 			$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
 	
-			var_dump($fill,$alpha,$copy,$destroy);
 			$directory = getUploadDir();
 			$fileName = uniqid() . '.jpg';
 			$destination = $directory . $fileName;
 			// $success = move_uploaded_file($imgSourceJPG, $destination);
 	
 			$success = imagejpeg($bg, $destination, $quality);
-			var_dump($success);
 			
 	
 			if ($success){
