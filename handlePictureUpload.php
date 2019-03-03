@@ -38,29 +38,33 @@
 	// }
 
 	function savePNGtoJPG($filePath){
-		$image = imagecreatefrompng($filePath);
-		$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
-		imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
-		imagealphablending($bg, TRUE);
-		imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-		imagedestroy($image);
-		$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
-
-		$directory = getUploadDir();
-		$fileName = uniqid() . '.jpg';
-		$destination = $directory . $fileName;
-		// $success = move_uploaded_file($imgSourceJPG, $destination);
-
-		$success = imagejpeg($bg, $destination, $quality);
-		
-
-		if ($success){
-			imagedestroy($bg);
-			$thumbnail = new ImageResize($destination);
-			$thumbnail->resizeToWidth(160);
-			$thumbnail->save(THUMBNAIL_DIR . $fileName);
+		try {
+			$image = imagecreatefrompng($filePath);
+			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
+			imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+			imagealphablending($bg, TRUE);
+			imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+			imagedestroy($image);
+			$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
+	
+			$directory = getUploadDir();
+			$fileName = uniqid() . '.jpg';
+			$destination = $directory . $fileName;
+			// $success = move_uploaded_file($imgSourceJPG, $destination);
+	
+			$success = imagejpeg($bg, $destination, $quality);
+			
+	
+			if ($success){
+				imagedestroy($bg);
+				$thumbnail = new ImageResize($destination);
+				$thumbnail->resizeToWidth(160);
+				$thumbnail->save(THUMBNAIL_DIR . $fileName);
+			}
+			print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
+		} catch (Exception $e) {
+			print $e->getMessage() . $e->getCode();
 		}
-		print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 	}
 
 	/**
