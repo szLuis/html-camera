@@ -42,18 +42,20 @@ error_reporting(E_ALL);
 		try {
 			$image = imagecreatefrompng($filePath);
 			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
-			imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
-			imagealphablending($bg, TRUE);
-			imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-			imagedestroy($image);
+			$fill = imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+			$alpha=imagealphablending($bg, TRUE);
+			$copy  = imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+			$destroy=imagedestroy($image);
 			$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
 	
+			var_dump($fill,$alpha,$copy,$destroy);
 			$directory = getUploadDir();
 			$fileName = uniqid() . '.jpg';
 			$destination = $directory . $fileName;
 			// $success = move_uploaded_file($imgSourceJPG, $destination);
 	
 			$success = imagejpeg($bg, $destination, $quality);
+			var_dump($success);
 			
 	
 			if ($success){
