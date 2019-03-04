@@ -3,6 +3,10 @@ error_reporting(E_ALL);
 	// requires php5
 	require_once  'vendor/autoload.php';
 	use Gumlet\ImageResize;
+
+	var_dump(exif_imagetype("images/5c7d6cc94b1aa"));
+
+	exit();
 	
 	define('UPLOAD_DIR', 'images/');
 	define('THUMBNAIL_DIR', 'thumbnails/');
@@ -42,32 +46,42 @@ error_reporting(E_ALL);
 	function savePNGtoJPG($filePath){
 		try {
 			$fileName = uniqid();
-			move_uploaded_file($filePath, UPLOAD_DIR . $fileName . ".png");
-			$uploadedFile = UPLOAD_DIR . $fileName . ".png";
-			var_dump($uploadedFile);
-
-			$image = @imagecreatefrompng($uploadedFile);
-
-			var_dump("IMAGE: " . $image);
-			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
-			imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
-			imagealphablending($bg, TRUE);
-			imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-			imagedestroy($image);
-			$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
-	
 			$directory = getUploadDir();
-			$destination = $directory . $fileName  . ".jpg";
-			// $success = move_uploaded_file($imgSourceJPG, $destination);
+			
+			if (exif_imagetype($filePath)===IMAGETYPE_JPEG){
+				$extension = ".jpg";
+			}else if (exif_imagetype($filePath)===IMAGETYPE_PNG){
+				$extension = ".png";
+			}
+			
+			$destination = $directory . $fileName  . $extension;
+			if ($extension===".jpg"){
+				$success = move_uploaded_file($filePath, $destination);
+			}else if ($extension===".png"){
+
+				$image = imagecreatefrompng($filePath);
 	
-			$success = imagejpeg($bg, $destination, $quality);
+				// var_dump("IMAGE: " . $image);
+				$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
+				imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+				imagealphablending($bg, TRUE);
+				imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+				imagedestroy($image);
+				$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
+		
+				
+				// $success = move_uploaded_file($imgSourceJPG, $destination);
+		
+				$success = imagejpeg($bg, $destination, $quality);
+				imagedestroy($bg);
+			}
+			
+			// $uploadedFile = UPLOAD_DIR . $fileName . ".png";
+			// var_dump($uploadedFile);
+
 			
 	
 			if ($success){
-				imagedestroy($bg);
-				if (file_exists($uploadedFile)){
-					unlink($uploadedFile);
-				}
 				$thumbnail = new ImageResize($destination);
 				$thumbnail->resizeToWidth(160);
 				$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
