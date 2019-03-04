@@ -14,6 +14,7 @@ error_reporting(E_ALL);
 	}
 
 	// saveBlobAsImage($img);
+	var_dump($img);
 	savePNGtoJPG($img);
 
 	function saveDataUriImage($img)
@@ -40,9 +41,9 @@ error_reporting(E_ALL);
 
 	function savePNGtoJPG($filePath){
 		try {
-			$fileName = uniqid() . '.jpg';
-			move_uploaded_file($filePath, UPLOAD_DIR . $fileName);
-			$uploadedFile = UPLOAD_DIR . $fileName;
+			$fileName = uniqid();
+			move_uploaded_file($filePath, UPLOAD_DIR . $fileName . ".png");
+			$uploadedFile = UPLOAD_DIR . $fileName . ".png";
 
 
 			$image = @imagecreatefrompng($uploadedFile);
@@ -56,7 +57,7 @@ error_reporting(E_ALL);
 			$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
 	
 			$directory = getUploadDir();
-			$destination = $directory . $fileName;
+			$destination = $directory . $fileName  . ".jpg";
 			// $success = move_uploaded_file($imgSourceJPG, $destination);
 	
 			$success = imagejpeg($bg, $destination, $quality);
@@ -69,7 +70,7 @@ error_reporting(E_ALL);
 				}
 				$thumbnail = new ImageResize($destination);
 				$thumbnail->resizeToWidth(160);
-				$thumbnail->save(THUMBNAIL_DIR . $fileName);
+				$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
 			}
 			print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 		} catch (Exception $e) {
