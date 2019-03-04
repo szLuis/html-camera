@@ -12,7 +12,17 @@ error_reporting(E_ALL);
 	}else{
 		$img = $_POST['picture'];
 	}
-	var_dump($img);
+
+	if ( ! function_exists( 'exif_imagetype' ) ) {
+		var_dump("no existe");
+		function exif_imagetype ( $filename ) {
+			if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== false ) {
+				return $type;
+			}
+		return false;
+		}
+	}
+
 	savePNGtoJPG($img);
 
 	function saveDataUriImage($img)
@@ -37,21 +47,12 @@ error_reporting(E_ALL);
 	// 	print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 	// }
 
-	if ( ! function_exists( 'exif_imagetype' ) ) {
-		function exif_imagetype ( $filename ) {
-			if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== false ) {
-				return $type;
-			}
-		return false;
-		}
-	}
+	
 
 	function savePNGtoJPG($filePath){
 		try {
 			$fileName = uniqid();
-			var_dump($filePath, $fileName);
 			$directory = getUploadDir();
-			var_dump($directory);
 			
 			if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
 				$extension = ".jpg";
