@@ -49,6 +49,7 @@ error_reporting(E_ALL);
 			}else if (exif_imagetype($filePath)===IMAGETYPE_PNG){
 				$extension = ".png";
 			}
+			var_dump($extension);
 			
 			$destination = $directory . $fileName  . $extension;
 			var_dump($destination);
