@@ -46,6 +46,8 @@ error_reporting(E_ALL);
 
 
 			$image = @imagecreatefrompng($uploadedFile);
+
+			var_dump("IMAGE: " . $image);
 			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
 			imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
 			imagealphablending($bg, TRUE);
