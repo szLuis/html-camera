@@ -59,13 +59,13 @@ error_reporting(E_ALL);
 			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
 				$extension = ".png";
 			}
-			var_dump($extension);
 			
 			$destination = $directory . $fileName  . $extension;
-			var_dump($destination);
+			
 			if ($extension===".jpg"){
 				$success = move_uploaded_file($filePath, $destination);
 			}else if ($extension===".png"){
+				$destination = $directory . $fileName  . ".jpg";
 
 				$image = imagecreatefrompng($filePath);
 	
