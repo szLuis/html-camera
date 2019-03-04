@@ -40,7 +40,9 @@ error_reporting(E_ALL);
 	function savePNGtoJPG($filePath){
 		try {
 			$fileName = uniqid();
+			var_dump($filePath, $fileName);
 			$directory = getUploadDir();
+			var_dump($directory);
 			
 			if (exif_imagetype($filePath)===IMAGETYPE_JPEG){
 				$extension = ".jpg";
