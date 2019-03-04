@@ -37,6 +37,15 @@ error_reporting(E_ALL);
 	// 	print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 	// }
 
+	if ( ! function_exists( 'exif_imagetype' ) ) {
+		function exif_imagetype ( $filename ) {
+			if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== false ) {
+				return $type;
+			}
+		return false;
+		}
+	}
+
 	function savePNGtoJPG($filePath){
 		try {
 			$fileName = uniqid();
