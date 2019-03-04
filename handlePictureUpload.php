@@ -4,10 +4,6 @@ error_reporting(E_ALL);
 	require_once  'vendor/autoload.php';
 	use Gumlet\ImageResize;
 
-	var_dump(exif_imagetype("images/5c7d6cc94b1aa"));
-
-	exit();
-	
 	define('UPLOAD_DIR', 'images/');
 	define('THUMBNAIL_DIR', 'thumbnails/');
 
@@ -17,8 +13,6 @@ error_reporting(E_ALL);
 		$img = $_POST['picture'];
 	}
 
-	// saveBlobAsImage($img);
-	var_dump($img);
 	savePNGtoJPG($img);
 
 	function saveDataUriImage($img)
