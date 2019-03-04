@@ -44,9 +44,9 @@ error_reporting(E_ALL);
 			$directory = getUploadDir();
 			var_dump($directory);
 			
-			if (exif_imagetype($filePath)===IMAGETYPE_JPEG){
+			if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
 				$extension = ".jpg";
-			}else if (exif_imagetype($filePath)===IMAGETYPE_PNG){
+			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
 				$extension = ".png";
 			}
 			var_dump($extension);
