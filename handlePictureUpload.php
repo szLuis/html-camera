@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 	}else{
 		$img = $_POST['picture'];
 	}
-
+	var_dump($img);
 	savePNGtoJPG($img);
 
 	function saveDataUriImage($img)
