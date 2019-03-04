@@ -44,7 +44,7 @@ error_reporting(E_ALL);
 			$fileName = uniqid();
 			move_uploaded_file($filePath, UPLOAD_DIR . $fileName . ".png");
 			$uploadedFile = UPLOAD_DIR . $fileName . ".png";
-
+			var_dump($uploadedFile);
 
 			$image = @imagecreatefrompng($uploadedFile);
 
