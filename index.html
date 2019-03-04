@@ -160,8 +160,8 @@
     // //load video camera
     function loadCamera() {
         // front = !front; 
-        const constraints = { video: { facingMode: { exact: 'environment' } } };
-        // const constraints = { video: { facingMode: 'environment' } };
+        // const constraints = { video: { facingMode: { exact: 'environment' } } };
+        const constraints = { video: true };
         navigator.mediaDevices.getUserMedia(constraints)
         .then(gotMedia)
         .catch(error => console.error('getUserMedia() error:' + error));
