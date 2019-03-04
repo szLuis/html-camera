@@ -40,7 +40,12 @@ error_reporting(E_ALL);
 
 	function savePNGtoJPG($filePath){
 		try {
-			$image = @imagecreatefrompng($filePath);
+			$fileName = uniqid() . '.jpg';
+			move_uploaded_file($filePath, UPLOAD_DIR . $fileName);
+			$uploadedFile = UPLOAD_DIR . $fileName;
+
+
+			$image = @imagecreatefrompng($uploadedFile);
 			$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
 			imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
 			imagealphablending($bg, TRUE);
@@ -49,7 +54,6 @@ error_reporting(E_ALL);
 			$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
 	
 			$directory = getUploadDir();
-			$fileName = uniqid() . '.jpg';
 			$destination = $directory . $fileName;
 			// $success = move_uploaded_file($imgSourceJPG, $destination);
 	
@@ -58,6 +62,9 @@ error_reporting(E_ALL);
 	
 			if ($success){
 				imagedestroy($bg);
+				if (file_exists($uploadedFile)){
+					unlink($uploadedFile);
+				}
 				$thumbnail = new ImageResize($destination);
 				$thumbnail->resizeToWidth(160);
 				$thumbnail->save(THUMBNAIL_DIR . $fileName);
