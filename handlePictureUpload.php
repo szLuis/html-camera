@@ -14,7 +14,6 @@ error_reporting(E_ALL);
 	}
 
 	if ( ! function_exists( 'exif_imagetype' ) ) {
-		var_dump("no existe");
 		function exif_imagetype ( $filename ) {
 			if ( ( list($width, $height, $type, $attr) = getimagesize( $filename ) ) !== false ) {
 				return $type;
