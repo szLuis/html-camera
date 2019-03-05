@@ -7,6 +7,10 @@ error_reporting(E_ALL);
 	define('UPLOAD_DIR', 'images/');
 	define('THUMBNAIL_DIR', 'thumbnails/');
 
+	// show what comes from Microsoft Surface
+	var_dump($_FILES);
+	exit();	
+
 	if (count($_FILES) === 1){
 		$img = $_FILES['data']['tmp_name'];	
 	}else{
@@ -58,7 +62,7 @@ error_reporting(E_ALL);
 			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
 				$extension = ".png";
 			}
-			
+
 			$destination = $directory . $fileName  . $extension;
 			
 			if ($extension===".jpg"){
