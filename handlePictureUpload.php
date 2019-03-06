@@ -92,11 +92,11 @@ error_reporting(E_ALL);
 			// var_dump($uploadedFile);
 
 	
-			if ($success){
-				$thumbnail = new ImageResize($destination);
-				$thumbnail->resizeToWidth(160);
-				$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
-			}
+			// if ($success){
+			// 	$thumbnail = new ImageResize($destination);
+			// 	$thumbnail->resizeToWidth(160);
+			// 	$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
+			// }
 			print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 		} catch (Exception $e) {
 			print $e->getMessage() . $e->getCode();
