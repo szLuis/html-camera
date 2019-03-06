@@ -7,14 +7,13 @@ error_reporting(E_ALL);
 	define('UPLOAD_DIR', 'images/');
 	define('THUMBNAIL_DIR', 'thumbnails/');
 
-	// show what comes from Microsoft Surface
-	var_dump($_FILES);
-	exit();	
+	// show what comes from Microsoft Surface	
+	
 
 	if (count($_FILES) === 1){
 		$img = $_FILES['data']['tmp_name'];	
 	}else{
-		$img = $_POST['picture'];
+		$img = $_POST['data'];
 	}
 
 	if ( ! function_exists( 'exif_imagetype' ) ) {
@@ -56,15 +55,16 @@ error_reporting(E_ALL);
 		try {
 			$fileName = uniqid();
 			$directory = getUploadDir();
-			
-			if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
+
+			if (mime_content_type($filePath) == "image/jpeg"){
+				$extension = ".jpg";
+			} else if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
 				$extension = ".jpg";
 			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
 				$extension = ".png";
 			}
 
 			$destination = $directory . $fileName  . $extension;
-			
 			if ($extension===".jpg"){
 				$success = move_uploaded_file($filePath, $destination);
 			}else if ($extension===".png"){
