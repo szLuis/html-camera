@@ -11,7 +11,7 @@ error_reporting(E_ALL);
 	
 
 	if (count($_FILES) === 1){
-		$img = $_FILES['data']['tmp_name'];	
+		$img = $_FILES['data']['name'];	
 	}else{
 		$img = $_POST['data'];
 	}
@@ -55,7 +55,7 @@ error_reporting(E_ALL);
 		try {
 			$fileName = uniqid();
 			$directory = getUploadDir();
-			
+
 			$extension = ".jpg";// borrar
 
 			$success = move_uploaded_file($filePath, $directory . $fileName);
