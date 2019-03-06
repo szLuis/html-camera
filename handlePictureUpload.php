@@ -67,28 +67,28 @@ error_reporting(E_ALL);
 			$destination = $directory . $fileName  . $extension;
 			$success = move_uploaded_file($filePath, $directory . $fileName);
 				var_dump($success);
-			if ($extension===".jpg"){
-				$success = move_uploaded_file($filePath, $directory . $fileName);
-				var_dump($success);
-			}else if ($extension===".png"){
-				$destination = $directory . $fileName  . ".jpg";
+			// if ($extension===".jpg"){
+			// 	$success = move_uploaded_file($filePath, $directory . $fileName);
+			// 	var_dump($success);
+			// }else if ($extension===".png"){
+			// 	$destination = $directory . $fileName  . ".jpg";
 
-				$image = imagecreatefrompng($filePath);
+			// 	$image = imagecreatefrompng($filePath);
 	
-				// var_dump("IMAGE: " . $image);
-				$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
-				imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
-				imagealphablending($bg, TRUE);
-				imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-				imagedestroy($image);
-				$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
+			// 	// var_dump("IMAGE: " . $image);
+			// 	$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
+			// 	imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+			// 	imagealphablending($bg, TRUE);
+			// 	imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+			// 	imagedestroy($image);
+			// 	$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
 		
 				
-				// $success = move_uploaded_file($imgSourceJPG, $destination);
+			// 	// $success = move_uploaded_file($imgSourceJPG, $destination);
 		
-				$success = imagejpeg($bg, $destination, $quality);
-				imagedestroy($bg);
-			}
+			// 	$success = imagejpeg($bg, $destination, $quality);
+			// 	imagedestroy($bg);
+			// }
 			
 			// $uploadedFile = UPLOAD_DIR . $fileName . ".png";
 			// var_dump($uploadedFile);
