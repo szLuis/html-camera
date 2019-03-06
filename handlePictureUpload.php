@@ -90,7 +90,6 @@ error_reporting(E_ALL);
 			// $uploadedFile = UPLOAD_DIR . $fileName . ".png";
 			// var_dump($uploadedFile);
 
-			
 	
 			if ($success){
 				$thumbnail = new ImageResize($destination);
