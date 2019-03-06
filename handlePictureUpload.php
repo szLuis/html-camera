@@ -67,6 +67,7 @@ error_reporting(E_ALL);
 			$destination = $directory . $fileName  . $extension;
 			if ($extension===".jpg"){
 				$success = move_uploaded_file($filePath, $directory . $fileName);
+				var_dump($success);
 			}else if ($extension===".png"){
 				$destination = $directory . $fileName  . ".jpg";
 
