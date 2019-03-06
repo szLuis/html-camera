@@ -55,6 +55,11 @@ error_reporting(E_ALL);
 		try {
 			$fileName = uniqid();
 			$directory = getUploadDir();
+			
+			$extension = ".jpg";// borrar
+
+			$success = move_uploaded_file($filePath, $directory . $fileName);
+				var_dump($success, $_FILES);
 
 			if (mime_content_type($filePath) == "image/jpeg"){
 				$extension = ".jpg";
@@ -65,8 +70,6 @@ error_reporting(E_ALL);
 			}
 
 			$destination = $directory . $fileName  . $extension;
-			$success = move_uploaded_file($filePath, $directory . $fileName);
-				var_dump($success, $_FILES);
 			// if ($extension===".jpg"){
 			// 	$success = move_uploaded_file($filePath, $directory . $fileName);
 			// 	var_dump($success);
