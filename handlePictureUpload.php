@@ -6,8 +6,6 @@ error_reporting(E_ALL);
 	require_once  'vendor/autoload.php';
 	use Gumlet\ImageResize;
 
-	
-
 	define('UPLOAD_DIR', 'images/');
 	define('THUMBNAIL_DIR', 'thumbnails/');
 
@@ -20,7 +18,6 @@ error_reporting(E_ALL);
 		$img = $_POST['data'];
 	}
 
-	var_dump($_FILES);
 
 	if ( ! function_exists( 'exif_imagetype' ) ) {
 		function exif_imagetype ( $filename ) {
@@ -62,55 +59,45 @@ error_reporting(E_ALL);
 			$fileName = uniqid();
 			$directory = getUploadDir();
 
-			$extension = ".jpg";// borrar
-
 			// if (!is_uploaded_file($filePath)){
 			// 	print "FIle wasn't uploadded yet";
 			// }
-			$success = move_uploaded_file($filePath, $directory . $fileName . $extension);
-			
 
 			// if (mime_content_type($filePath) == "image/jpeg"){
 			// 	$extension = ".jpg";
-			// } else if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
-			// 	$extension = ".jpg";
-			// }else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
-			// 	$extension = ".png";
-			// }
+			// } else 
+			if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
+				$extension = ".jpg";
+			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
+				$extension = ".png";
+			}
 
 			$destination = $directory . $fileName  . $extension;
-			// if ($extension===".jpg"){
-			// 	$success = move_uploaded_file($filePath, $directory . $fileName);
-			// 	var_dump($success);
-			// }else if ($extension===".png"){
-			// 	$destination = $directory . $fileName  . ".jpg";
+			if ($extension===".jpg"){
+				$success = move_uploaded_file($filePath, $directory . $fileName);
+				var_dump($success);
+			}else if ($extension===".png"){
+				$destination = $directory . $fileName  . ".jpg";
 
-			// 	$image = imagecreatefrompng($filePath);
+				$image = imagecreatefrompng($filePath);
 	
-			// 	// var_dump("IMAGE: " . $image);
-			// 	$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
-			// 	imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
-			// 	imagealphablending($bg, TRUE);
-			// 	imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
-			// 	imagedestroy($image);
-			// 	$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
-		
-				
-			// 	// $success = move_uploaded_file($imgSourceJPG, $destination);
-		
-			// 	$success = imagejpeg($bg, $destination, $quality);
-			// 	imagedestroy($bg);
-			// }
-			
-			// $uploadedFile = UPLOAD_DIR . $fileName . ".png";
-			// var_dump($uploadedFile);
+				$bg = imagecreatetruecolor(imagesx($image), imagesy($image)); //create a black image from the specific measures
+				imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+				imagealphablending($bg, TRUE);
+				imagecopy($bg, $image, 0, 0, 0, 0, imagesx($image), imagesy($image));
+				imagedestroy($image);
+				$quality = 100; // 0 = worst / smaller file, 100 = better / bigger file 
+				$success = imagejpeg($bg, $destination, $quality);
+				imagedestroy($bg);
+			}
 
 	
-			// if ($success){
-			// 	$thumbnail = new ImageResize($destination);
-			// 	$thumbnail->resizeToWidth(160);
-			// 	$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
-			// }
+			if ($success){
+				$thumbnail = new ImageResize($destination);
+				$thumbnail->resizeToWidth(160);
+				$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
+			}
+
 			print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 		} catch (Exception $e) {
 			print $e->getMessage() . $e->getCode();
