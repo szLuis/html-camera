@@ -1,20 +1,26 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 	// requires php5
 	require_once  'vendor/autoload.php';
 	use Gumlet\ImageResize;
+
+	
 
 	define('UPLOAD_DIR', 'images/');
 	define('THUMBNAIL_DIR', 'thumbnails/');
 
 	// show what comes from Microsoft Surface	
 	
-
 	if (count($_FILES) === 1){
-		$img = $_FILES['data']['name'];	
+		// header("Content-type:image/jpeg");
+		$img = $_FILES['data']['tmp_name'];	
 	}else{
 		$img = $_POST['data'];
 	}
+
+	var_dump($_FILES);
 
 	if ( ! function_exists( 'exif_imagetype' ) ) {
 		function exif_imagetype ( $filename ) {
@@ -58,16 +64,19 @@ error_reporting(E_ALL);
 
 			$extension = ".jpg";// borrar
 
-			$success = move_uploaded_file($filePath, $directory . $fileName);
-				var_dump($success, $_FILES);
+			// if (!is_uploaded_file($filePath)){
+			// 	print "FIle wasn't uploadded yet";
+			// }
+			$success = move_uploaded_file($filePath, $directory . $fileName . $extension);
+			
 
-			if (mime_content_type($filePath) == "image/jpeg"){
-				$extension = ".jpg";
-			} else if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
-				$extension = ".jpg";
-			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
-				$extension = ".png";
-			}
+			// if (mime_content_type($filePath) == "image/jpeg"){
+			// 	$extension = ".jpg";
+			// } else if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
+			// 	$extension = ".jpg";
+			// }else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
+			// 	$extension = ".png";
+			// }
 
 			$destination = $directory . $fileName  . $extension;
 			// if ($extension===".jpg"){
