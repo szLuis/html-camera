@@ -1,7 +1,6 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-var_dump(ini_set("upload_max_filesize", "8M"));
 error_reporting(E_ALL);
 	// requires php5
 	require_once  'vendor/autoload.php';
