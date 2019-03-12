@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Take picture</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
+    <link rel="stylesheet" href="win-css/bootstrap.min.css">
+    <script src="win-js/jquery-3.1.1.min.js"></script>
 </head>
 <body>
         <div class="container-fluid">
@@ -21,14 +18,14 @@
                 <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
                     <div class="col-md-12" >
                         <!-- Target -->
-                        <input readonly style="width:60%; " type="url" name="picture-url" id="picture-url" value="https://github.com/zenorocha/clipboard.js.git">
+                        <input readonly style="width:60%; " type="url" name="picture-url" id="picture-url" value="">
             
                         <!-- Trigger -->
                         <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url">
-                            <img src="assets/clippy.svg" width="24" height="24" alt="Copy to clipboard">
+                            <img src="win-assets/clippy.svg" width="24" height="24" alt="Copy to clipboard">
                         </button>
 
-                        <a href="gallery.php" class="btn btn-primary">Gallery</a>
+                        <a href="win-gallery.php" class="btn btn-primary">Gallery</a>
                     </div>
                 </div>
               <div class="row">
@@ -248,13 +245,9 @@
     }
 
     function stopVideoStream(mediaStream){
-        // console.log(mediaStreamTrack);
         if (mediaStream.active){
-            console.log('is active video tracks' );
-            console.log(mediaStream.getVideoTracks());
             mediaStream.getVideoTracks()[0].stop();
         }
-        // console.log(mediaStreamTrack);
     }
 
     // switch camera
@@ -282,7 +275,7 @@
                 
             $.ajax({
                 type: "POST",
-                url: "handlePictureUpload.php",
+                url: "win-handlePictureUpload.php",
                 data: fd,
                 processData: false,
                 contentType: false //data needs be read as FILES on the server

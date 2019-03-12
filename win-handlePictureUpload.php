@@ -1,18 +1,15 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-	// requires php5
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 	require_once  'vendor/autoload.php';
 	use Gumlet\ImageResize;
 
-	define('UPLOAD_DIR', 'images/');
-	define('THUMBNAIL_DIR', 'thumbnails/');
+	define('UPLOAD_DIR', 'win-images/');
+	define('THUMBNAIL_DIR', 'win-thumbnails/');
 
-	// show what comes from Microsoft Surface	
 	
 	if (count($_FILES) === 1){
-		// header("Content-type:image/jpeg");
 		$img = $_FILES['data']['tmp_name'];	
 	}else{
 		$img = $_POST['data'];
@@ -40,20 +37,6 @@ error_reporting(E_ALL);
 		print $success ?  $_SERVER['SERVER_NAME'] . $_SERVER['host'] . "/" . $file : 'Unable to save the file.';
 	}
 
-	// function saveBlobAsImage($imgSource){
-	// 	$imgSourceJPG=savePNGtoJPG($imgSource);
-		
-		
-	// 	if ($success){
-	// 		$thumbnail = new ImageResize($destination);
-	// 		$thumbnail->resizeToWidth(160);
-	// 		$thumbnail->save(THUMBNAIL_DIR . $fileName);
-	// 	}
-	// 	print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
-	// }
-
-	
-
 	function savePNGtoJPG($filePath){
 		try {
 			$fileName = uniqid();
@@ -63,9 +46,6 @@ error_reporting(E_ALL);
 			// 	print "FIle wasn't uploadded yet";
 			// }
 
-			// if (mime_content_type($filePath) == "image/jpeg"){
-			// 	$extension = ".jpg";
-			// } else 
 			if (exif_imagetype($filePath)==IMAGETYPE_JPEG){
 				$extension = ".jpg";
 			}else if (exif_imagetype($filePath)==IMAGETYPE_PNG){
@@ -75,7 +55,6 @@ error_reporting(E_ALL);
 			$destination = $directory . $fileName  . $extension;
 			if ($extension===".jpg"){
 				$success = move_uploaded_file($filePath, $destination);
-				// var_dump($success);
 			}else if ($extension===".png"){
 				$destination = $directory . $fileName  . ".jpg";
 
@@ -132,8 +111,4 @@ error_reporting(E_ALL);
 	{
 		return mkdir($path, 0755, true);
 	}
-
-	/* $allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
-$detectedType = exif_imagetype($_FILES['fupload']['tmp_name']);
-$error = !in_array($detectedType, $allowedTypes); */
 ?>
