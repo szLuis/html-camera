@@ -7,9 +7,17 @@
     <title>Take picture</title>
     <link rel="stylesheet" href="win-css/bootstrap.min.css">
     <script src="win-js/jquery-3.1.1.min.js"></script>
+    <style>
+        body,html {
+            display:flex;
+  align-items:center;
+  height: 100%;
+  width: 100%;
+        }
+    </style>
 </head>
 <body>
-        <div class="container-fluid">
+        <div class="container-fluid mh-100 ">
                 <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
                     <div class="col-md-12" >
                       <p>Uploading...</p>
@@ -29,12 +37,10 @@
                     </div>
                 </div>
               <div class="row">
-                <div class="col-md-6 col-lg-6">
+                <div class="col-md-6 col-lg-6  align-self-center" >
                     <div class="card" >
-                        <video id="player"  class="card-img-top" style="top: 0"  autoplay></video>
+                        <video id="player"  class="card-img-top"   autoplay></video>
                         <div class="card-body">
-                          <!-- <h5 class="card-title">Live</h5>
-                          <p class="card-text">Click the video to capture. Click the button to change camera</p> -->
                           <div class="text-center" >
                             <!-- <select name="cameras" id="cameraSelect">
                                 <option value="0">Choose camera</option>
@@ -47,14 +53,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6  col-lg-6 invisible" id="captured-image">
+                <div class="col-md-6  col-lg-6 align-self-center invisible" id="captured-image" >
                     <div class="card" >
-                        <img id="picture-captured" class="card-img-top"  src="" alt="">
+                        <img id="picture-captured" class="card-img-top"    src="" alt="">
                         <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
                         <div class="card-body">
                                 <div class="text-center" >
-                                    <!-- <h5 class="card-title">Picture</h5>
-                                    <p class="card-text">Click the button below to upload.</p> -->
                                     <a href="#" id="upload" class="btn btn-primary">Upload</a>
                                 </div>
                         </div>
@@ -201,6 +205,8 @@
 
         const imageCapture = new ImageCapture(mediaStreamTrack);
 
+        setPlayerSize(imageCapture);
+
         // player.addEventListener("click", function(){
         //     takePic(imageCapture);
         // });
@@ -210,6 +216,20 @@
             takePic(imageCapture);
         })
 
+    }
+
+    function setPlayerSize(imageCapture) {
+        var maxWidth;
+        var maxHeight;
+        imageCapture.getPhotoCapabilities()
+        .then(photoCapabilities =>{
+            maxWidth = photoCapabilities.imageWidth.max;
+            maxHeight = photoCapabilities.imageHeight.max;
+            const player = document.getElementById('player');
+            player.height = maxHeight;
+            player.width = maxWidth;
+        })
+        .catch(error => console.error('getPhotoCapabilities() error:', error));
     }
 
 
@@ -238,7 +258,9 @@
             fd.append('fname', 'image.png');
 
             img.src = URL.createObjectURL(blob);
-            capturedImage.setAttribute('class',"col-md-6  col-lg-6 visible");
+            // img.height  = maxHeight;
+            // img.width = maxWidth;
+            capturedImage.setAttribute('class',"col-md-6  col-lg-6 align-self-center visible");
             img.onload = () => { URL.revokeObjectURL(this.src); }
         })
         .catch(error => console.error('takePhoto() error:', error));
