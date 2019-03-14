@@ -41,7 +41,7 @@
                     <div class="card" >
                         <video id="player"  class="card-img-top"   autoplay></video>
                         <div class="card-body">
-                          <div class="text-center" >
+                          <div class="text-left" >
                             <!-- <select name="cameras" id="cameraSelect">
                                 <option value="0">Choose camera</option>
                             </select> -->
@@ -58,7 +58,7 @@
                         <img id="picture-captured" class="card-img-top"    src="" alt="">
                         <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
                         <div class="card-body">
-                                <div class="text-center" >
+                                <div class="text-right" >
                                     <a href="#" id="upload" class="btn btn-primary">Upload</a>
                                 </div>
                         </div>
@@ -177,7 +177,31 @@
         // console.log(mediaStream.getVideoTracks());
 
         currentStream = mediaStream;
-        const mediaStreamTrack = mediaStream.getVideoTracks()[0];                
+        const mediaStreamTrack = mediaStream.getVideoTracks()[0];  
+
+        const constraints = {
+            width: 1280,
+            height: 720,
+            aspectRatio: 1.7777777778
+        };
+        mediaStreamTrack.applyConstraints(constraints)
+        .then(() => {
+            // var settings = mediaStreamTrack.getSettings();
+            const imageCapture = new ImageCapture(mediaStreamTrack);
+
+            const captureButton = document.getElementById('capture');
+            captureButton.addEventListener('click', function(){
+                takePic(imageCapture);
+            })
+            // console.log(settings)      
+            // Do something with the track such as using the Image Capture API.
+        })
+        .catch(error => {
+            console.error('applyConstraints() error:' + error);
+            // The constraints could not be satisfied by the available devices.
+        })
+        
+                ;
         
         // if (mediaStream.active){
         //     console.log('is active video tracks' );
@@ -203,34 +227,29 @@
         // });
 
 
-        const imageCapture = new ImageCapture(mediaStreamTrack);
 
-        setPlayerSize(imageCapture);
+        // setPlayerSize(imageCapture);
 
         // player.addEventListener("click", function(){
         //     takePic(imageCapture);
         // });
 
-        const captureButton = document.getElementById('capture');
-        captureButton.addEventListener('click', function(){
-            takePic(imageCapture);
-        })
 
     }
 
-    function setPlayerSize(imageCapture) {
-        var maxWidth;
-        var maxHeight;
-        imageCapture.getPhotoCapabilities()
-        .then(photoCapabilities =>{
-            maxWidth = photoCapabilities.imageWidth.max;
-            maxHeight = photoCapabilities.imageHeight.max;
-            const player = document.getElementById('player');
-            player.height = maxHeight;
-            player.width = maxWidth;
-        })
-        .catch(error => console.error('getPhotoCapabilities() error:', error));
-    }
+    // function setPlayerSize(imageCapture) {
+    //     var maxWidth;
+    //     var maxHeight;
+    //     imageCapture.getPhotoCapabilities()
+    //     .then(photoCapabilities =>{
+    //         maxWidth = photoCapabilities.imageWidth.max;
+    //         maxHeight = photoCapabilities.imageHeight.max;
+    //         const player = document.getElementById('player');
+    //         player.height = maxHeight;
+    //         player.width = maxWidth;
+    //     })
+    //     .catch(error => console.error('getPhotoCapabilities() error:', error));
+    // }
 
 
 

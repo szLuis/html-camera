@@ -27,15 +27,15 @@
 
 	savePNGtoJPG($img);
 
-	function saveDataUriImage($img)
-	{
-		$img = str_replace('data:image/png;base64,', '', $img);
-		$img = str_replace(' ', '+', $img);
-		$data = base64_decode($img);
-		$file = UPLOAD_DIR;// . uniqid() . '.png';
-		$success = file_put_contents($file, $data);
-		print $success ?  $_SERVER['SERVER_NAME'] . $_SERVER['host'] . "/" . $file : 'Unable to save the file.';
-	}
+	// function saveDataUriImage($img)
+	// {
+	// 	$img = str_replace('data:image/png;base64,', '', $img);
+	// 	$img = str_replace(' ', '+', $img);
+	// 	$data = base64_decode($img);
+	// 	$file = UPLOAD_DIR;// . uniqid() . '.png';
+	// 	$success = file_put_contents($file, $data);
+	// 	print $success ?  "https://" . $_SERVER['SERVER_NAME'] . $_SERVER['host'] . "/" . $file : 'Unable to save the file.';
+	// }
 
 	function savePNGtoJPG($filePath){
 		try {
@@ -77,7 +77,7 @@
 				$thumbnail->save(THUMBNAIL_DIR . $fileName   . ".jpg");
 			}
 
-			print $success ?  $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
+			print $success ?  "https://" . $_SERVER['SERVER_NAME'] .  "/" . $destination : 'Unable to save the file.';
 		} catch (Exception $e) {
 			print $e->getMessage() . $e->getCode();
 		}
