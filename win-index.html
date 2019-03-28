@@ -75,234 +75,95 @@
     <script>
         loadCamera();
 
-        // navigator.mediaDevices.enumerateDevices()
-        // .then(gotDevices)
-        // .catch(error => {
-        //     console.log('enumerateDevices() error: ' + error);
-        // });
-
-        // let currentStream;
-
-        // function stopMediaTracks(stream) {
-        //     stream.getTracks().forEach(track => {
-        //         track.stop();
-        //     });
-        // }
-
-    // function gotDevices(devicesInfo) {
-    //     devicesInfo.forEach(device => {
-    //         const button = document.createElement('button');
-            
-    //         if (device.kind === 'videoinput'){
-    //             const text = document.createTextNode(device.label);
-    //             button.appendChild(text);
-    //             button.addEventListener('click',  function(){
-
-    //                 if (typeof currentStream !== 'undefined') {
-    //                     stopMediaTracks(currentStream);
-    //                 }
-
-    //                 const constraints = {
-    //                     audio: false,
-    //                     video: {
-    //                         deviceId: device.deviceId ? {exact: device.deviceId} : undefined
-    //                     }
-    //                 };
-    //                 navigator.mediaDevices.getUserMedia(constraints)
-    //                 .then(gotMedia)
-    //                 .catch(error => console.error('getUserMedia() error:', error));
-    //             });
-    //             document.body.appendChild(button);
-    //         }
-    //     });
-
-    // }
-
-        // function gotDevices(devicesInfo) {
-        //     const cameraSelect = document.getElementById('cameraSelect');
-        //     devicesInfo.forEach(device => {
-        //         const option = document.createElement('option');
-        //         if (device.kind === 'videoinput'){
-        //             option.value = device.deviceId;
-        //             option.text = device.label || 'Camera ' + cameraSelect.length + 1;
-        //             cameraSelect.appendChild(option);
-        //             console.log(device.kind  + " - " + device.deviceId + " - " + device.label);
-        //         }
-        //     });
-
-        // }
-
-    // cameraSelect = document.getElementById('cameraSelect');
-    // var front = true;
-    // cameraSelect.addEventListener('change', function(){
-    //     if (cameraSelect.value !== '0') {
-
-    //         if (typeof currentStream !== 'undefined') {
-    //             stopMediaTracks(currentStream);
-    //         }
-    //         // alert('select clicked' + cameraSelect.value);
-    //         const deviceId = cameraSelect.value;
-    //         const constraints = {
-    //             audio: false,
-    //             video: {
-    //                 facingMode: front? "user" : "environment" 
-    //                 // deviceId: deviceId ? {exact: deviceId} : undefined
-    //             }
-    //         };
-    //         navigator.mediaDevices.getUserMedia(constraints)
-    //         .then(gotMedia)
-    //         .catch(error => console.error('getUserMedia() error:', error));
-
-    //         console.log('User media fired');
-    //     }
-        
-    // })
-
-    // //load video camera
-    function loadCamera() {
-        // front = !front; 
-        // const constraints = { video: { facingMode: { exact: 'environment' } } };
-        const constraints = { video: true };
-        navigator.mediaDevices.getUserMedia(constraints)
-        .then(gotMedia)
-        .catch(error => console.error('getUserMedia() error:' + error));
-    }
-
-    function gotMedia(mediaStream) {
-
-
-        //set vide source to player
-        const player = document.getElementById('player');
-        player.srcObject=mediaStream;
-        // console.log(mediaStream.getVideoTracks());
-
-        currentStream = mediaStream;
-        const mediaStreamTrack = mediaStream.getVideoTracks()[0];  
-
-        const constraints = {
-            width: 1280,
-            height: 720,
-            aspectRatio: 1.7777777778
-        };
-        mediaStreamTrack.applyConstraints(constraints)
-        .then(() => {
-            // var settings = mediaStreamTrack.getSettings();
-            const imageCapture = new ImageCapture(mediaStreamTrack);
-
-            const captureButton = document.getElementById('capture');
-            captureButton.addEventListener('click', function(){
-                takePic(imageCapture);
-            })
-            // console.log(settings)      
-            // Do something with the track such as using the Image Capture API.
-        })
-        .catch(error => {
-            console.error('applyConstraints() error:' + error);
-            // The constraints could not be satisfied by the available devices.
-        })
-        
-                ;
-        
-        // if (mediaStream.active){
-        //     console.log('is active video tracks' );
-        //     console.log(mediaStream.getVideoTracks());
-        //     mediaStream.getVideoTracks()[0].stop();
-        // }
-        // console.log(mediaStreamTrack);
-
-        // const button = document.querySelectorAll("button");
-
-        // button.forEach(btn =>{
-        //     btn.addEventListener("click", function(){
-        //     alert('click fired');
-        //     stopVideoStream(mediaStream);
-        // });
-        // } );
-
-        // cameraSelect.addEventListener('change', function(){
-        //     if (cameraSelect.value !== '0') {
-        //         console.log('Media Track stop fired');
-        //         stopVideoStream(mediaStream);
-        //     }
-        // });
-
-
-
-        // setPlayerSize(imageCapture);
-
-        // player.addEventListener("click", function(){
-        //     takePic(imageCapture);
-        // });
-
-
-    }
-
-    // function setPlayerSize(imageCapture) {
-    //     var maxWidth;
-    //     var maxHeight;
-    //     imageCapture.getPhotoCapabilities()
-    //     .then(photoCapabilities =>{
-    //         maxWidth = photoCapabilities.imageWidth.max;
-    //         maxHeight = photoCapabilities.imageHeight.max;
-    //         const player = document.getElementById('player');
-    //         player.height = maxHeight;
-    //         player.width = maxWidth;
-    //     })
-    //     .catch(error => console.error('getPhotoCapabilities() error:', error));
-    // }
-
-
-
-    var fd = new FormData();
-    
-    //take picture
-    function takePic(imageCapture) {
-        const player = document.getElementById('player');
-            
-        const img = document.getElementById('picture-captured');
-        const capturedImage = document.getElementById('captured-image');
-        var maxWidth;
-        var maxHeight;
-        imageCapture.getPhotoCapabilities()
-        .then(photoCapabilities =>{
-            // maxWidth = photoCapabilities.imageWidth.max;
-            // maxHeight = photoCapabilities.imageHeight.max;
-            maxWidth = 1088; // 3264 / 3
-            maxHeight = 612; // 1836 / 3
-        })
-        .catch(error => console.error('getPhotoCapabilities() error:', error));
-
-        imageCapture.takePhoto({ imageWidth:maxWidth, imageHeight: maxHeight })
-        .then(blob => {
-            
-            fd.append('data', blob);
-            fd.append('fname', 'image.png');
-
-            img.src = URL.createObjectURL(blob);
-            // img.height  = maxHeight;
-            // img.width = maxWidth;
-            capturedImage.setAttribute('class',"col-md-6  col-lg-6 align-self-center visible");
-            img.onload = () => { URL.revokeObjectURL(this.src); }
-        })
-        .catch(error => console.error('takePhoto() error:', error));
-    }
-
-    function stopVideoStream(mediaStream){
-        if (mediaStream.active){
-            mediaStream.getVideoTracks()[0].stop();
+        // //load video camera
+        function loadCamera() {
+            // front = !front; 
+            // const constraints = { video: { facingMode: { exact: 'environment' } } };
+            const constraints = { video: true };
+            navigator.mediaDevices.getUserMedia(constraints)
+            .then(gotMedia)
+            .catch(error => console.error('getUserMedia() error:' + error));
         }
-    }
 
-    // switch camera
-    // document.getElementById('change-camera').onclick = function() { 
-    //     front = !front;
-    //     loadCamera(front) ;
-    // };
+        function gotMedia(mediaStream) {
+
+            //set vide source to player
+            const player = document.getElementById('player');
+            player.srcObject=mediaStream;
+            // console.log(mediaStream.getVideoTracks());
+
+            currentStream = mediaStream;
+            const mediaStreamTrack = mediaStream.getVideoTracks()[0];  
+
+            const constraints = {
+                width: 1280,
+                height: 720,
+                aspectRatio: 1.7777777778
+            };
+            mediaStreamTrack.applyConstraints(constraints)
+            .then(() => {
+                // var settings = mediaStreamTrack.getSettings();
+                const imageCapture = new ImageCapture(mediaStreamTrack);
+
+                const captureButton = document.getElementById('capture');
+                captureButton.addEventListener('click', function(){
+                    takePic(imageCapture);
+                })
+                // console.log(settings)      
+                // Do something with the track such as using the Image Capture API.
+            })
+            .catch(error => {
+                console.error('applyConstraints() error:' + error);
+                // The constraints could not be satisfied by the available devices.
+            })
+            
+                    ;
+            
+        }
+
+ 
 
 
 
+        var fd = new FormData();
     
-</script>
+        //take picture
+        function takePic(imageCapture) {
+            const player = document.getElementById('player');
+                
+            const img = document.getElementById('picture-captured');
+            const capturedImage = document.getElementById('captured-image');
+            var maxWidth;
+            var maxHeight;
+            imageCapture.getPhotoCapabilities()
+            .then(photoCapabilities =>{
+                // maxWidth = photoCapabilities.imageWidth.max;
+                // maxHeight = photoCapabilities.imageHeight.max;
+                maxWidth = 1088; // 3264 / 3
+                maxHeight = 612; // 1836 / 3
+            })
+            .catch(error => console.error('getPhotoCapabilities() error:', error));
+
+            imageCapture.takePhoto({ imageWidth:maxWidth, imageHeight: maxHeight })
+            .then(blob => {
+                
+                fd.append('data', blob);
+                fd.append('fname', 'image.png');
+
+                img.src = URL.createObjectURL(blob);
+                capturedImage.setAttribute('class',"col-md-6  col-lg-6 align-self-center visible");
+                img.onload = () => { URL.revokeObjectURL(this.src); }
+            })
+            .catch(error => console.error('takePhoto() error:', error));
+        }
+
+        function stopVideoStream(mediaStream){
+            if (mediaStream.active){
+                mediaStream.getVideoTracks()[0].stop();
+            }
+        }
+
+    </script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -311,11 +172,13 @@
 
 <script>
     $(document).ready(function(){
-        
+        var urls = '';
+        var counter = 0;
+
         var img = document.getElementById('picture-captured');
         $("#upload").on("click", function() {
             $("#uploading-msg").show();
-                
+
             $.ajax({
                 type: "POST",
                 url: "win-handlePictureUpload.php",
@@ -323,9 +186,22 @@
                 processData: false,
                 contentType: false //data needs be read as FILES on the server
             }).done(function(response){
-                $("#uploading-msg").hide();
-                $("#picture-url-div").show();
-                $("#picture-url").val(response);
+                    $("#uploading-msg").hide();
+                    $("#picture-url-div").show();
+                    //controls resetting the five image string
+                    if (counter >= 5 ){
+                        // console.log('Clicks reseted to 0');
+                        counter = 0;
+                        urls = '';
+                    }
+                
+                    counter = counter + 1;
+                    // adds vertical bar to the urls string
+                    if (counter > 0 && counter <= 5 ){
+                        urls = urls.concat(response + '|');   
+                        // console.log(urls);
+                    }
+                    $("#picture-url").val(urls.slice(0, urls.length - 1));
                 });
             });
     });
