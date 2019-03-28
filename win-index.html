@@ -25,15 +25,16 @@
                 </div>
                 <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
                     <div class="col-md-12" >
+                        <button id="gallery" class="btn btn-primary align-middle " style="height: 100%;" >Gallery</button>
+
                         <!-- Target -->
-                        <input readonly style="width:60%; " type="url" name="picture-url" id="picture-url" value="">
+                        <input readonly style="width:85%; height: 100%; "  type="url" name="picture-url" id="picture-url" value="">
             
                         <!-- Trigger -->
                         <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url">
-                            <img src="win-assets/clippy.svg" width="24" height="24" alt="Copy to clipboard">
+                            <img src="win-assets/clippy.svg" width="48" height="48" alt="Copy to clipboard">
                         </button>
 
-                        <a href="win-gallery.php" class="btn btn-primary">Gallery</a>
                     </div>
                 </div>
               <div class="row">
@@ -171,6 +172,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 
 <script>
+    var galleryButton = document.getElementById('gallery');
+    galleryButton.addEventListener('click', function() {
+        window.location.href = 'win-gallery.php';
+    })
+
     $(document).ready(function(){
         var urls = '';
         var counter = 0;
