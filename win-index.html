@@ -265,8 +265,10 @@
         var maxHeight;
         imageCapture.getPhotoCapabilities()
         .then(photoCapabilities =>{
-            maxWidth = photoCapabilities.imageWidth.max;
-            maxHeight = photoCapabilities.imageHeight.max;
+            // maxWidth = photoCapabilities.imageWidth.max;
+            // maxHeight = photoCapabilities.imageHeight.max;
+            maxWidth = 1088; // 3264 / 3
+            maxHeight = 612; // 1836 / 3
         })
         .catch(error => console.error('getPhotoCapabilities() error:', error));
 
