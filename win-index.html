@@ -10,39 +10,43 @@
     <style>
         body,html {
             display:flex;
-  align-items:center;
-  height: 100%;
-  width: 100%;
+            align-items:center;
+            height: 100%;
+            width: 100%;
         }
+
     </style>
 </head>
 <body>
-        <div class="container-fluid mh-100 ">
-                <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
-                    <div class="col-md-12" >
-                      <p>Uploading...</p>
-                    </div>
+    <div class="container-fluid mh-100 ">
+        <div class="row"   id="uploading-msg" style="margin: 30px; display: none;">
+                <div class="col-md-12" >
+                    <p>Uploading...</p>
                 </div>
-                <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
-                    <div class="col-md-12" >
+        </div>
+        <div class="row"  id="picture-url-div" style="margin: 30px; display: none;" >
+            <div class="col-md-12" >
+                <div class="input-group mb-2" style="width:100%; height: 100%; ">
                         <button id="gallery" class="btn btn-primary align-middle " style="height: 100%;" >Gallery</button>
-
-                        <!-- Target -->
-                        <input readonly style="width:85%; height: 100%; "  type="url" name="picture-url" id="picture-url" value="">
-            
-                        <!-- Trigger -->
-                        <button style="margin-left: 0;" class="btn-copy" data-clipboard-target="#picture-url">
-                            <img src="win-assets/clippy.svg" width="48" height="48" alt="Copy to clipboard">
-                        </button>
-
+                    <input type="search" readonly  class="form-control"  name="picture-url" id="picture-url" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button id="clear-button" class="btn btn-outline-secondary" style="height: 100%;" type="button">Clear</button>
                     </div>
+                    <!-- Trigger -->
+                    <button style="margin-left: 30px;" class="btn-copy" data-clipboard-target="#picture-url">
+                        <img src="win-assets/clippy.svg" width="48" height="48" alt="Copy to clipboard">
+                    </button>
                 </div>
-              <div class="row">
-                <div class="col-md-6 col-lg-6  align-self-center" >
-                    <div class="card" >
-                        <video id="player"  class="card-img-top"   autoplay></video>
-                        <div class="card-body">
-                          <div class="text-left" >
+                <!-- Target -->
+                <!-- <input  style="width:85%; height: 100%; "  type="search" name="picture-url" id="picture-url" value=""> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6  align-self-center" >
+                <div class="card" >
+                    <video id="player"  class="card-img-top"   autoplay></video>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between" >
                             <!-- <select name="cameras" id="cameraSelect">
                                 <option value="0">Choose camera</option>
                             </select> -->
@@ -50,28 +54,28 @@
                                 <img src="assets/switch_camera.svg" width="32" height="32" alt="">
                             </button> -->
                             <a href="#" id="capture" class="btn btn-primary">Take picture</a>
-                          </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="col-md-6  col-lg-6 align-self-center invisible" id="captured-image" >
+                <div class="card" >
+                    <img id="picture-captured" class="card-img-top"    src="" alt="">
+                    <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
+                    <div class="card-body ">
+                        <div class="d-flex justify-content-between">
+                            <div class="alert alert-info text-left" id="alert-pictures-taken" role="alert">
+                                    Pictures taken: 
+                            </div>
+                            <div class="text-right" >
+                                <a href="#" id="upload" class="btn btn-primary">Upload</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6  col-lg-6 align-self-center invisible" id="captured-image" >
-                    <div class="card" >
-                        <img id="picture-captured" class="card-img-top"    src="" alt="">
-                        <!-- <canvas id="snapshot" class="card-img-top" width=640 height=480 ></canvas> -->
-                        <div class="card-body">
-                                <div class="text-right" >
-                                    <a href="#" id="upload" class="btn btn-primary">Upload</a>
-                                </div>
-                        </div>
-                      </div>
-                </div>
-              </div>
             </div>
-    
-    
-    
-    
-
+        </div>
+    </div>
 
     <script>
         loadCamera();
@@ -145,7 +149,7 @@
             })
             .catch(error => console.error('getPhotoCapabilities() error:', error));
 
-            imageCapture.takePhoto({ imageWidth:maxWidth, imageHeight: maxHeight })
+            imageCapture.takePhoto({ imageWidth:1088, imageHeight: 612 })
             .then(blob => {
                 
                 fd.append('data', blob);
@@ -175,6 +179,12 @@
     var galleryButton = document.getElementById('gallery');
     galleryButton.addEventListener('click', function() {
         window.location.href = 'win-gallery.php';
+    });
+
+    var clearButton = document.getElementById('clear-button');
+    clearButton.addEventListener('click', function() {
+        var picUrl = document.getElementById('picture-url');
+        picUrl.value="";
     })
 
     $(document).ready(function(){
@@ -202,8 +212,10 @@
                     }
                 
                     counter = counter + 1;
+                    var alertPicturesTaken = document.getElementById("alert-pictures-taken");
                     // adds vertical bar to the urls string
                     if (counter > 0 && counter <= 5 ){
+                        alertPicturesTaken.innerText = "Pictures uploaded: " + counter;
                         urls = urls.concat(response + '|');   
                         // console.log(urls);
                     }
