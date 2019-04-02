@@ -65,7 +65,7 @@
                     <div class="card-body ">
                         <div class="d-flex justify-content-between">
                             <div class="alert alert-info text-left" id="alert-pictures-taken" role="alert">
-                                    Pictures taken: 
+                                    Pictures uploaded: 
                             </div>
                             <div class="text-right" >
                                 <a href="#" id="upload" class="btn btn-primary">Upload</a>
@@ -76,7 +76,8 @@
             </div>
         </div>
     </div>
-
+    
+    <script src="win-js/resize.js"></script>
     <script>
         loadCamera();
 
@@ -131,33 +132,28 @@
 
 
         var fd = new FormData();
-    
+
+        function setResizedPicToImgSrc(blob){
+            const img = document.getElementById('picture-captured');
+            const capturedImage = document.getElementById('captured-image');
+
+            fd.append('data', blob);
+            fd.append('fname', 'image.png');
+
+            img.src = URL.createObjectURL(blob);
+            capturedImage.setAttribute('class',"col-md-6  col-lg-6 align-self-center visible");
+            img.onload = () => { URL.revokeObjectURL(this.src); }
+        }
+
         //take picture
         function takePic(imageCapture) {
             const player = document.getElementById('player');
                 
-            const img = document.getElementById('picture-captured');
-            const capturedImage = document.getElementById('captured-image');
-            var maxWidth;
-            var maxHeight;
-            imageCapture.getPhotoCapabilities()
-            .then(photoCapabilities =>{
-                // maxWidth = photoCapabilities.imageWidth.max;
-                // maxHeight = photoCapabilities.imageHeight.max;
-                maxWidth = 1088; // 3264 / 3
-                maxHeight = 612; // 1836 / 3
-            })
-            .catch(error => console.error('getPhotoCapabilities() error:', error));
-
-            imageCapture.takePhoto({ imageWidth:1088, imageHeight: 612 })
+            imageCapture.takePhoto()
             .then(blob => {
-                
-                fd.append('data', blob);
-                fd.append('fname', 'image.png');
-
-                img.src = URL.createObjectURL(blob);
-                capturedImage.setAttribute('class',"col-md-6  col-lg-6 align-self-center visible");
-                img.onload = () => { URL.revokeObjectURL(this.src); }
+                var resize = new window.resize;
+                var image = document.getElementById('picture-captured');
+                resize.photo(blob, 1088, 'file', setResizedPicToImgSrc);
             })
             .catch(error => console.error('takePhoto() error:', error));
         }
@@ -174,8 +170,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-
 <script>
+
     var galleryButton = document.getElementById('gallery');
     galleryButton.addEventListener('click', function() {
         window.location.href = 'win-gallery.php';
@@ -206,7 +202,6 @@
                     $("#picture-url-div").show();
                     //controls resetting the five image string
                     if (counter >= 5 ){
-                        // console.log('Clicks reseted to 0');
                         counter = 0;
                         urls = '';
                     }
@@ -217,7 +212,6 @@
                     if (counter > 0 && counter <= 5 ){
                         alertPicturesTaken.innerText = "Pictures uploaded: " + counter;
                         urls = urls.concat(response + '|');   
-                        // console.log(urls);
                     }
                     $("#picture-url").val(urls.slice(0, urls.length - 1));
                 });
