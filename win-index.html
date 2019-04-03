@@ -153,7 +153,11 @@
             .then(blob => {
                 var resize = new window.resize;
                 var image = document.getElementById('picture-captured');
-                resize.photo(blob, 1088, 'file', setResizedPicToImgSrc);
+                //read picture resolution from localStorage
+                if (localStorage.getItem('pictureResolution') != null){
+                    pictureResolution = localStorage.getItem('pictureResolution');
+                }
+                resize.photo(blob, pictureResolution, 'file', setResizedPicToImgSrc);
             })
             .catch(error => console.error('takePhoto() error:', error));
         }

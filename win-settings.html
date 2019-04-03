@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML Camera Settings</title>
+</head>
+<style>
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+.one {
+  grid-column: 1 / 3;
+  grid-row: 1;
+}
+.two { 
+  grid-column: 2 / 4;
+  grid-row: 2 / 3;
+}
+</style>
+<body>
+    <div class="wrapper">
+            <div class="two">
+                <label for="resolution">Change the resolution</label><br><br>
+                <input type="range" style="width: 250px;" list="resolution-list" max="3264" min="1088" step="1088" value="1088" name="resolution" id="resolution" >
+                <datalist id="resolution-list"    >
+                    <option value="1088" label="1088 px"></option>
+                    <option value="2176" label="2176 px"></option>
+                    <option value="3264" label="3264 px"></option>
+                </datalist>
+                <br>
+                <input type="text" style="width: 250px; text-align: center;" name="resolution-text" readonly id="resolution-text">
+            </div>
+    </div>
+<script>
+    var range = document.getElementById('resolution');
+    var resolutionText = document.getElementById('resolution-text');
+    //read picture resolution from localStorage
+    if (localStorage.getItem('pictureResolution') != null){
+        range.value = localStorage.getItem('pictureResolution');
+    }
+    resolutionText.value = range.value;
+
+    range.addEventListener("change", function () {
+        resolutionText.value = range.value;
+        localStorage.setItem('pictureResolution', range.value);        
+    })
+</script>
+</body>
+</html>
