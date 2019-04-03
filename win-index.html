@@ -156,6 +156,8 @@
                 //read picture resolution from localStorage
                 if (localStorage.getItem('pictureResolution') != null){
                     pictureResolution = localStorage.getItem('pictureResolution');
+                }else{
+                    pictureResolution = 1088;
                 }
                 resize.photo(blob, pictureResolution, 'file', setResizedPicToImgSrc);
             })
