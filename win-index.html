@@ -65,7 +65,7 @@
                     <div class="card-body ">
                         <div class="d-flex justify-content-between">
                             <div class="alert alert-info text-left" id="alert-pictures-taken" role="alert">
-                                    Pictures uploaded: 
+                                    Pictures uploaded: 0
                             </div>
                             <div class="text-right" >
                                 <a href="#" id="upload" class="btn btn-primary">Upload</a>
@@ -183,15 +183,22 @@
         window.location.href = 'win-gallery.php';
     });
 
+    var urls = '';
+    var counter = 0;
+
+    var alertPicturesTaken = document.getElementById("alert-pictures-taken");
+
     var clearButton = document.getElementById('clear-button');
     clearButton.addEventListener('click', function() {
         var picUrl = document.getElementById('picture-url');
-        picUrl.value="";
+        picUrl.value = '';
+        urls = '';
+        counter = 0;
+        alertPicturesTaken.innerText = "Pictures uploaded: " + counter;
     })
 
     $(document).ready(function(){
-        var urls = '';
-        var counter = 0;
+        
 
         var img = document.getElementById('picture-captured');
         $("#upload").on("click", function() {
@@ -213,7 +220,7 @@
                     }
                 
                     counter = counter + 1;
-                    var alertPicturesTaken = document.getElementById("alert-pictures-taken");
+                    
                     // adds vertical bar to the urls string
                     if (counter > 0 && counter <= 5 ){
                         alertPicturesTaken.innerText = "Pictures uploaded: " + counter;
