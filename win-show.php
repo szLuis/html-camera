@@ -20,7 +20,7 @@
                     <?php
                         
 
-                        $relativePath = $_SERVER["SERVER_NAME"] . substr($_SERVER["SCRIPT_NAME"], 0,-12);
+                        $relativePath = "https://" . $_SERVER["SERVER_NAME"] . substr($_SERVER["SCRIPT_NAME"], 0,-12);
                         $dir  = $_GET['dir'];
                         if (isset($dir)){
                             define('UPLOAD_DIR', 'win-images/');
