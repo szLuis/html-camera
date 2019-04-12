@@ -114,6 +114,7 @@
                 const captureButton = document.getElementById('capture');
                 captureButton.addEventListener('click', function(){
                     takePic(imageCapture);
+                    activateUploadButton();
                 })
                 // console.log(settings)      
                 // Do something with the track such as using the Image Capture API.
@@ -127,18 +128,18 @@
             
         }
 
- 
+        function activateUploadButton() {
+            const uploadButton = document.getElementById('upload');
+            uploadButton.className = 'btn btn-primary';
+        }
 
-
-
-        var fd = new FormData();
+        const fd = new FormData();
 
         function setResizedPicToImgSrc(blob){
             const img = document.getElementById('picture-captured');
             const capturedImage = document.getElementById('captured-image');
 
-            fd.append('data', blob);
-            fd.append('fname', 'image.png');
+            fd.set('data', blob);
 
             img.src = URL.createObjectURL(blob);
             capturedImage.setAttribute('class',"col-md-6  col-lg-6 align-self-center visible");
@@ -151,7 +152,6 @@
                 
             imageCapture.takePhoto()
             .then(blob => {
-                var resize = new window.resize;
                 var image = document.getElementById('picture-captured');
                 //read picture resolution from localStorage
                 if (localStorage.getItem('pictureResolution') != null){
@@ -159,7 +159,7 @@
                 }else{
                     pictureResolution = 1088;
                 }
-                resize.photo(blob, pictureResolution, 'file', setResizedPicToImgSrc);
+                window.resize.prototype.photo(blob, pictureResolution, 'file', setResizedPicToImgSrc);
             })
             .catch(error => console.error('takePhoto() error:', error));
         }
@@ -203,7 +203,7 @@
         var img = document.getElementById('picture-captured');
         $("#upload").on("click", function() {
             $("#uploading-msg").show();
-
+            $('#upload').toggleClass('disabled'); //deactivate button while uploading
             $.ajax({
                 type: "POST",
                 url: "win-handlePictureUpload.php",
