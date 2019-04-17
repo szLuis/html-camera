@@ -199,6 +199,7 @@
 
     $(document).ready(function(){
         
+        const maxPictureNumbersToTake = 10;
 
         var img = document.getElementById('picture-captured');
         $("#upload").on("click", function() {
@@ -213,8 +214,8 @@
             }).done(function(response){
                     $("#uploading-msg").hide();
                     $("#picture-url-div").show();
-                    //controls resetting the five image string
-                    if (counter >= 5 ){
+                    //controls resetting the maxPictureNumbersToTake image string
+                    if (counter >= maxPictureNumbersToTake ){
                         counter = 0;
                         urls = '';
                     }
@@ -222,7 +223,7 @@
                     counter = counter + 1;
                     
                     // adds vertical bar to the urls string
-                    if (counter > 0 && counter <= 5 ){
+                    if (counter > 0 && counter <= maxPictureNumbersToTake ){
                         alertPicturesTaken.innerText = "Pictures uploaded: " + counter;
                         urls = urls.concat(response + '|');   
                     }
