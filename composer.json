@@ -1,6 +1,6 @@
 {
     "name": "szluis/html-camera",
-    "description": "Uses browser to access device camera and allows to take a snapshot and the upload to server.",
+    "description": "Uses browser to access device camera and allows to take a snapshot and then allows to upload to the server.",
     "type": "project",
     "authors": [
         {

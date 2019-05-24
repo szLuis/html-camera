@@ -1,1 +1,2 @@
-/win-vendor/
+/vendor/
+/composer.lock
